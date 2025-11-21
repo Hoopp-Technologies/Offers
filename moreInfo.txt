@@ -1,0 +1,30 @@
+Sections
+Header Navigation
+Top navigation bar with RewardClan logo, menu items (Categories, Wishlist, My profile, Cart) with icons, and a 'Sell on RewardClan' CTA button
+Hero Section
+Hero area with main heading 'Find the best offers and discounts online', subheading, and search bar with search icon
+Filters Section
+Filter controls including 'Apply filter' button and category pills (Food & dinning, Beauty & wellness, Electronics & tech, Experiences, Digital products, Hospitality) with a 'Popularity' sort dropdown on the right
+Product Grid
+Grid layout of product cards showing deals with images, badges, titles, pricing, discount percentages, purchase counts, and categories. Includes navigation arrows on cards and a sort dropdown overlay
+Load More
+Button with down arrow icon and text 'Scroll to load deals' for pagination
+Footer
+Multi-column footer with Company, Explore, Support sections containing links, Connect section with social media icons (Instagram, LinkedIn, Facebook), disclaimer text, and copyright
+Features
+Product Search
+Search bar in the hero section with search icon for filtering deals and offers
+Category Filtering
+Horizontal category pills below search bar for filtering by Food & dinning, Beauty & wellness, Electronics & tech, Experiences, Digital products, and Hospitality
+Sort Dropdown
+Dropdown menu on the right side showing sort options: Popularity, Newest, Highest discount, Lowest price, and Expiring soon
+Product Cards
+Grid of product cards with image, badge (Bestseller or time-limited), title, pricing, discount percentage, bought count, and category
+Product Navigation
+Left and right arrow buttons on product cards for carousel navigation
+Load More Pagination
+Button at the bottom with text 'Scroll to load deals' for loading additional products
+Navigation Header
+Top header with logo, navigation items (Categories, Wishlist, My profile, Cart) with icons, and CTA button
+Footer Links
+Multi-column footer with Company, Explore, Support sections containing navigation links and social media icons

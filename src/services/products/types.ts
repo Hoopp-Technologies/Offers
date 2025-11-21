@@ -1,0 +1,33 @@
+export type OfferData = {
+  id: string;
+  productName: string;
+  productDescription: string;
+  type: string;
+  productPrice: number;
+  productType: string;
+  sizeColorSet: any[];
+  discountType: "PERCENTAGE";
+  triggerType: "MINIMUM_CART_VALUE";
+  offerEnds: string;
+  discount: number;
+  numberOfClaims: number;
+  cartValue: number;
+  orderQuantity: number;
+};
+
+type HomeOfferData = {
+  offerId: string
+  offerName: string
+  offerEndDate: string
+  price: number
+  discountType: "PERCENTAGE";
+  discountValue: number
+  quantityBought: number
+  category: "Digital";
+  imageUrls: any[];
+};
+
+export type HomeData = {
+  topOffers: HomeOfferData[];
+  recentlyAddedOffers: HomeOfferData[];
+};
