@@ -5,7 +5,7 @@ export type OfferData = {
   type: string;
   productPrice: number;
   productType: string;
-  sizeColorSet: any[];
+  sizeColorSet: string[];
   discountType: "PERCENTAGE";
   triggerType: "MINIMUM_CART_VALUE";
   offerEnds: string;
@@ -24,7 +24,7 @@ type HomeOfferData = {
   discountValue: number
   quantityBought: number
   category: "Digital";
-  imageUrls: any[];
+  imageUrls: string[];
 };
 
 export type HomeData = {

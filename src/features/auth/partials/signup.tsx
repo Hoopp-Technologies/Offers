@@ -17,9 +17,9 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm();
+  } = useForm<{emailAddress: string; password: string; confirmPassword: string}>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: {emailAddress: string; password: string; confirmPassword: string}) => {
     if (!validatePassword(data.password)) return;
     if (data.password !== data.confirmPassword) {
       toast.error("Passwords don't match")
@@ -74,7 +74,7 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
             type="text"
             placeholder="John"
             className="mt-2.5"
-            {...register("firstName", { required: false })}
+            // {...register("firstName", { required: true })}
           />        
         </div>
         <div>
@@ -86,7 +86,7 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
             type="text"
             placeholder="Doe"
             className="mt-2.5"
-            {...register("lastName", { required: false })}
+            // {...register("lastName", { required: true })}
           />         
         </div>
       </div>

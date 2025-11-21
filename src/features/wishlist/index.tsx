@@ -3,13 +3,14 @@ import ProductCard from "../products/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCart, useWishlist } from "@/context";
+import type { Product } from "@/utils/schema";
 
 
 const Wishlist: React.FC = () => {
   const { wishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  const handleMoveToCart = (product: any) => {
+  const handleMoveToCart = (product: Product) => {
     addToCart(product);
     removeFromWishlist(product.id);
   };

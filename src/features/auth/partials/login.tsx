@@ -16,9 +16,9 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm();
+  } = useForm<{ email: string; password: string }>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${BASE_URL}ecommerce/auth/login`, {
@@ -45,8 +45,12 @@ const Login = () => {
         toast.error(error);
         setIsLoading(false);
       }
-    } catch (error: any) {
-      toast.error(error);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
       setIsLoading(false);
     }
   };
