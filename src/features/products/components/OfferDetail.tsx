@@ -1,7 +1,8 @@
 import { CalendarDays, Percent } from "lucide-react";
 import React from "react";
+import type { ProductData } from "@/services/products/types";
 
-const OfferDetail: React.FC = () => {
+const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
   return (
     <div>
       <div className="border border-red-300 rounded-lg p-4">
@@ -9,19 +10,19 @@ const OfferDetail: React.FC = () => {
         <ul className="space-y-3 text-gray-700">
           <li className="flex items-start">
             <span>
-              Enjoy <strong>20% discount</strong> on your purchase when you
-              spend a minimum of ₦5,000 on selected items.
+              Enjoy <strong>{data.discount}% discount</strong> on your purchase
+              when you spend a minimum of ₦5,000 on selected items.
             </span>
           </li>
           <li className="flex items-center gap-1.5">
             <CalendarDays color="#808080" />
             <span>
-              Discount offer ends <strong>31 October 2025</strong>
+              Discount offer ends <strong>{data.offerEnds}</strong>
             </span>
           </li>
           <li className="flex items-center gap-1.5">
             <Percent color="#808080" />
-            <span>Enjoy 20% off on this discount offer.</span>
+            <span>Enjoy {data.discount}% off on this discount offer.</span>
           </li>
         </ul>
         <div className="mt-6 border-t pt-4 flex items-center gap-3">

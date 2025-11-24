@@ -1,15 +1,15 @@
-import React from "react";
+// import React from "react";
 import {
   FireIcon,
   ClockBadgeIcon,
   CartIcon,
   MenuIcon,
-  HeartIcon,
+  // HeartIcon,
 } from "@/components/icons";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { useCart, useWishlist } from "@/context";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import type { HomeOfferData } from "@/services/products/types";
 
 interface ProductCardProps {
@@ -34,27 +34,34 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const { addToCart } = useCart();
 
   const isWishlisted = isInWishlist(offerId);
+  console.log({
+    addToWishlist,
+    removeFromWishlist,
+    addToCart,
+    isWishlisted,
+    onAddToCart,
+    price,
+  });
+  // const handleWishlistClick = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   if (isWishlisted) {
+  //     removeFromWishlist(offerId);
+  //   } else {
+  //     addToWishlist(product);
+  //   }
+  // };
 
-  const handleWishlistClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (isWishlisted) {
-      removeFromWishlist(offerId);
-    } else {
-      addToWishlist(product);
-    }
-  };
-
-  const handleAddToCartClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onAddToCart) {
-      onAddToCart(product);
-    } else {
-      addToCart(product);
-      toast.success("Offer has been added to cart");
-    }
-  };
+  // const handleAddToCartClick = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   if (onAddToCart) {
+  //     onAddToCart(product);
+  //   } else {
+  //     addToCart(product);
+  //     toast.success("Offer has been added to cart");
+  //   }
+  // };
 
   const renderBadge = () => {
     if (discountType === "PERCENTAGE") {
@@ -81,12 +88,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden group relative h-full flex flex-col">
         <div className="relative">
           <img
-            src={imageUrls[0]}
+            src={imageUrls?.[0]}
             alt={offerName}
             className="w-full h-40 object-cover"
           />
           {renderBadge()}
-          <button
+          {/* <button
             onClick={handleWishlistClick}
             className={`absolute top-2 left-2 p-1.5 rounded-full bg-white/80 hover:bg-white transition-colors z-10 ${
               isWishlisted ? "text-red-500" : "text-gray-400"
@@ -95,7 +102,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             <HeartIcon
               className={`h-5 w-5 ${isWishlisted ? "fill-current" : ""}`}
             />
-          </button>
+          </button> */}
         </div>
 
         <div className="p-4 flex-1 flex flex-col">
@@ -128,14 +135,14 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               </div>
             </div>
 
-            <Button
+            {/* <Button
               onClick={handleAddToCartClick}
               className="w-full gap-2"
               variant="secondary"
             >
               <CartIcon className="h-4 w-4" />
               Add to Cart
-            </Button>
+            </Button> */}
           </div>
         </div>
 

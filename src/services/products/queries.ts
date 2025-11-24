@@ -1,5 +1,5 @@
 import { createQuery } from "../query";
-import type { HomeData, OfferData } from "./types";
+import type { HomeData, ProductData } from "./types";
 export const getOfferByIdKey = (arg: string) => ["/market-place/offer", arg];
 
 export const useGetAllOffers = createQuery<HomeData>({
@@ -7,17 +7,17 @@ export const useGetAllOffers = createQuery<HomeData>({
   url: "market-place/home",
 });
 
-export const useGetOfferDetails = createQuery<OfferData>({
+export const useGetOfferDetails = createQuery<ProductData>({
   key: getOfferByIdKey,
   url: "market-place/offer",
 });
 
-export const useGetWishlist = createQuery<OfferData>({
+export const useGetWishlist = createQuery<ProductData>({
   key: ["wishlist"],
   url: "ecommerce/customer/wishlist",
 });
 
-export const useGetCart = createQuery<OfferData>({
+export const useGetCart = createQuery<ProductData>({
   key: ["cart"],
   url: "ecommerce/customer/cart",
 });

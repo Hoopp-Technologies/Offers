@@ -1,11 +1,11 @@
-export type OfferData = {
+export type ProductData = {
   id: string;
   productName: string;
   productDescription: string;
   type: string;
   productPrice: number;
   productType: string;
-  sizeColorSet: string[];
+  sizeColorSet: { size: string; color: string; quantity: number }[];
   discountType: "PERCENTAGE";
   triggerType: "MINIMUM_CART_VALUE";
   offerEnds: string;
@@ -26,6 +26,8 @@ export type HomeOfferData = {
   category: "Digital";
   imageUrls: string[];
 };
+
+// export type  OfferFullData = OfferData & HomeOfferData;
 
 export type HomeData = {
   topOffers: HomeOfferData[];
