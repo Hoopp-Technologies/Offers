@@ -1,7 +1,10 @@
 import React, { createContext, useContext } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
 import type { Product } from "@/utils/schema";
-import { useAddToWishlist } from "@/services/products/mutations";
+import {
+  useAddToWishlistFn,
+  useDeleteFromWishlistFn,
+} from "@/services/products/mutations";
 import { AuthContext } from "./authContext";
 import { toast } from "sonner";
 
@@ -21,44 +24,53 @@ const WishlistDefaults: WishlistContextType = {
   isInWishlist: () => false,
 };
 
-export const WishlistContext = createContext<WishlistContextType>(WishlistDefaults);
+export const WishlistContext =
+  createContext<WishlistContextType>(WishlistDefaults);
 
-export const WishlistContextProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const WishlistContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [wishlistItems, setWishlistItems] = usePersistedState({
     key: "wishlist",
     defaultValue: [],
   });
   const { loggedIn } = useContext(AuthContext);
-  const { mutate: syncWishlist } = useAddToWishlist({});
 
   const addToWishlist = (product: Product) => {
     if (isInWishlist(product.id)) return;
     const newItems = [...(wishlistItems as Product[]), product];
     setWishlistItems(newItems);
     if (loggedIn) {
-        // Assuming backend accepts the product ID or the whole product object
-        // Adjust payload based on backend requirements. 
-        // For now sending productId.
-        syncWishlist({ data: { productId: product.id } });
+      // Assuming backend accepts the product ID or the whole product object
+      // Adjust payload based on backend requirements.
+      // For now sending productId.
+      const useAddToWishlist = useAddToWishlistFn(product.id);
+      const { mutate: syncWishlist } = useAddToWishlist({});
+      syncWishlist({});
     }
 
-    toast.success("Offer has been added to wishlist")
+    toast.success("Offer has been added to wishlist");
   };
 
   const removeFromWishlist = (productId: string) => {
-    const newItems = (wishlistItems as Product[]).filter((item) => item.id !== productId);
+    const newItems = (wishlistItems as Product[]).filter(
+      (item) => item.id !== productId
+    );
     setWishlistItems(newItems);
-    // TODO: Handle backend removal if API supports it separately or sync full list
+    if (loggedIn) {
+      // TODO: Handle backend removal if API supports it separately or sync full list
+      const useAddToWishlist = useDeleteFromWishlistFn(productId);
+      const { mutate: removeFromWishlist } = useAddToWishlist({});
+      removeFromWishlist({});
+    }
 
-      toast.success("Offer has been removed from wishlist")
+    toast.success("Offer has been removed from wishlist");
   };
 
   const clearWishlist = () => {
     setWishlistItems([]);
 
-    toast.success("Wishlist has been cleared")
+    toast.success("Wishlist has been cleared");
   };
 
   const isInWishlist = (productId: string) => {
@@ -82,4 +94,3 @@ export const WishlistContextProvider: React.FC<{ children: React.ReactNode }> = 
     </WishlistContext.Provider>
   );
 };
-
