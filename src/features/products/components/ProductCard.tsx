@@ -10,11 +10,14 @@ import { Link } from "react-router-dom";
 // import { Button } from "@/components/ui/button";
 import { useCart, useWishlist } from "@/context";
 // import { toast } from "sonner";
-import type { HomeOfferData } from "@/services/products/types";
+import type {
+  ProductData,
+  UnifiedProductType,
+} from "@/services/products/types";
 
 interface ProductCardProps {
-  product: HomeOfferData;
-  onAddToCart?: (product: HomeOfferData) => void;
+  product: UnifiedProductType;
+  onAddToCart?: (product: ProductData) => void;
 }
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
@@ -27,13 +30,14 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     discountValue,
     quantityBought,
     category,
+    id,
     offerId,
   } = product;
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  const isWishlisted = isInWishlist(offerId);
+  const isWishlisted = isInWishlist(offerId ?? id ?? "");
   console.log({
     addToWishlist,
     removeFromWishlist,

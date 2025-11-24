@@ -1,16 +1,16 @@
 import React, { createContext, useContext } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
-import type { Product } from "@/utils/schema";
 import {
   useAddToWishlistFn,
   useDeleteFromWishlistFn,
 } from "@/services/products/mutations";
 import { AuthContext } from "./authContext";
 import { toast } from "sonner";
+import type { ProductData } from "@/services/products/types";
 
 interface WishlistContextType {
-  wishlistItems: Product[];
-  addToWishlist: (product: Product) => void;
+  wishlistItems: ProductData[];
+  addToWishlist: (product: ProductData) => void;
   removeFromWishlist: (productId: string) => void;
   clearWishlist: () => void;
   isInWishlist: (productId: string) => boolean;
@@ -36,9 +36,9 @@ export const WishlistContextProvider: React.FC<{
   });
   const { loggedIn } = useContext(AuthContext);
 
-  const addToWishlist = (product: Product) => {
+  const addToWishlist = (product: ProductData) => {
     if (isInWishlist(product.id)) return;
-    const newItems = [...(wishlistItems as Product[]), product];
+    const newItems = [...(wishlistItems as ProductData[]), product];
     setWishlistItems(newItems);
     if (loggedIn) {
       // Assuming backend accepts the product ID or the whole product object
@@ -53,7 +53,7 @@ export const WishlistContextProvider: React.FC<{
   };
 
   const removeFromWishlist = (productId: string) => {
-    const newItems = (wishlistItems as Product[]).filter(
+    const newItems = (wishlistItems as ProductData[]).filter(
       (item) => item.id !== productId
     );
     setWishlistItems(newItems);
@@ -74,7 +74,9 @@ export const WishlistContextProvider: React.FC<{
   };
 
   const isInWishlist = (productId: string) => {
-    return (wishlistItems as Product[]).some((item) => item.id === productId);
+    return (wishlistItems as ProductData[]).some(
+      (item) => item.id === productId
+    );
   };
 
   // Sync on login could be handled here or in a separate effect
@@ -83,7 +85,7 @@ export const WishlistContextProvider: React.FC<{
   return (
     <WishlistContext.Provider
       value={{
-        wishlistItems: wishlistItems as Product[],
+        wishlistItems: wishlistItems as ProductData[],
         addToWishlist,
         removeFromWishlist,
         clearWishlist,

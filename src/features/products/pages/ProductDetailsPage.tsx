@@ -34,14 +34,6 @@ const ProductDetailsPage: React.FC = () => {
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
-  const handleWishlistClick = () => {
-    if (isInWishlist(mockProduct.id)) {
-      removeFromWishlist(mockProduct.id);
-    } else {
-      addToWishlist(mockProduct);
-    }
-  };
-
   const { data: productDetails } = useGetOfferDetails({
     path: productId,
   });
@@ -59,6 +51,14 @@ const ProductDetailsPage: React.FC = () => {
     },
     { label: product.productName, href: `#` },
   ];
+
+  const handleWishlistClick = () => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(mockProduct.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
 
   return (
     <main className="container mx-auto px-6 py-8 pt-32">

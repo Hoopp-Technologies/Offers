@@ -3,14 +3,13 @@ import ProductCard from "../products/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useCart, useWishlist } from "@/context";
-import type { Product } from "@/utils/schema";
-
+import type { ProductData } from "@/services/products/types";
 
 const Wishlist: React.FC = () => {
   const { wishlistItems, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  const handleMoveToCart = (product: Product) => {
+  const handleMoveToCart = (product: ProductData) => {
     addToCart(product);
     removeFromWishlist(product.id);
   };
@@ -41,10 +40,7 @@ const Wishlist: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-12">
           {wishlistItems.map((product) => (
             <div key={product.id} className="relative group h-full">
-              <ProductCard 
-                product={product} 
-                onAddToCart={handleMoveToCart}
-              />
+              <ProductCard product={product} onAddToCart={handleMoveToCart} />
             </div>
           ))}
         </div>

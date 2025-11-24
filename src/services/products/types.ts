@@ -27,7 +27,17 @@ export type HomeOfferData = {
   imageUrls: string[];
 };
 
-// export type  OfferFullData = OfferData & HomeOfferData;
+// Merged type combining ProductData and HomeOfferData
+// Using intersection type (&) to merge both types
+export type UnifiedProductType = Partial<ProductData> &
+  Partial<HomeOfferData> & {
+    // Common required fields
+    id?: string;
+    offerId?: string;
+  };
+
+// Alternative: If you want all properties from both types
+// export type FullProductType = ProductData & HomeOfferData;
 
 export type HomeData = {
   topOffers: HomeOfferData[];
