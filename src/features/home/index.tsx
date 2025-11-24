@@ -5,15 +5,15 @@ import LoadMoreButton from "../products/components/LoadMoreButton";
 import { useGetAllOffers } from "@/services/products/queries";
 
 export const Home = () => {
-  const {data, isLoading} = useGetAllOffers({})
+  const { data, isLoading } = useGetAllOffers({});
 
-  console.log({data, isLoading})
+  console.log({ data, isLoading });
   return (
     <div className="pt-20">
-        <HeroSection />
-        <FilterSection />
-        <ProductGrid />
-        <LoadMoreButton />
+      <HeroSection />
+      <FilterSection />
+      <ProductGrid data={data} />
+      <LoadMoreButton />
     </div>
   );
 };

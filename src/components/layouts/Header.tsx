@@ -1,25 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  MenuIcon,
-  HeartIcon,
-  UserIcon,
-  CartIcon,
-  PlusCircleIcon,
-} from "../icons";
+import { HeartIcon, CartIcon, PlusCircleIcon } from "../icons";
 import { Logo } from "../../assets";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context";
 import { cn } from "@/lib/utils";
+import ProfileCard from "./ProfileCard";
 // import { NavigationMenuDemo } from "./NavMenu";
 
 const Header: React.FC = () => {
   const navLinks = [
-    {
-      title: "Categories",
-      icon: <MenuIcon className="h-5 w-5 mr-1" color="#808080" />,
-      url: "/categories",
-    },
+    // {
+    //   title: "Categories",
+    //   icon: <MenuIcon className="h-5 w-5 mr-1" color="#808080" />,
+    //   url: "/categories",
+    // },
     {
       title: "Wishlist",
       icon: <HeartIcon className="h-5 w-5 mr-1" color="#808080" />,
@@ -45,7 +40,7 @@ const Header: React.FC = () => {
 
         <div className="flex items-center gap-10">
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-10">
             {navLinks.map(({ icon, title, url }, i) => (
               <Link
                 key={i}
@@ -56,15 +51,7 @@ const Header: React.FC = () => {
                 {title}
               </Link>
             ))}
-            {loggedIn && (
-              <Link
-                to={"/profile"}
-                className="flex flex-col items-center text-black hover:underline"
-              >
-                <UserIcon className="h-5 w-5 mr-1" color="#808080" />
-                My Profile
-              </Link>
-            )}
+            {true && <ProfileCard />}
           </nav>
 
           {/* CTA Button */}

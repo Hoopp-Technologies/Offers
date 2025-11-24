@@ -15,14 +15,14 @@ export type OfferData = {
   orderQuantity: number;
 };
 
-type HomeOfferData = {
-  offerId: string
-  offerName: string
-  offerEndDate: string
-  price: number
+export type HomeOfferData = {
+  offerId: string;
+  offerName: string;
+  offerEndDate: string;
+  price: number;
   discountType: "PERCENTAGE";
-  discountValue: number
-  quantityBought: number
+  discountValue: number;
+  quantityBought: number;
   category: "Digital";
   imageUrls: string[];
 };

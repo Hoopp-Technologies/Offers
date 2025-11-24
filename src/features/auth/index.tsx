@@ -20,7 +20,11 @@ const Auth = () => {
               <h1 className="text-center font-medium text-2xl">
                 Login / Register to Proceed
               </h1>
-              <Tabs defaultValue={tabValue} className="w-[400px] mx-auto mt-7">
+              <Tabs
+                defaultValue={tabValue}
+                onValueChange={setTabValue}
+                className="w-[400px] mx-auto mt-7"
+              >
                 <TabsList>
                   <TabsTrigger
                     className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10"

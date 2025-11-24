@@ -9,21 +9,27 @@ import Wishlist from "./features/wishlist";
 import CartPage from "./features/cart";
 import { Toaster } from "./components/ui/sonner";
 import Auth from "./features/auth";
+import CheckoutPage from "./features/checkout";
+import ProfilePage from "./features/profile";
+import PurchaseHistory from "./features/purchase-history";
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
       <Toaster />
-      <Auth/>
+      <Auth />
       <div className="bg-[#FAFAFA]">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/:productId" element={<ProductDetailsPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/cart" element={<CartPage />} />          
-          
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/purchase-history" element={<PurchaseHistory />} />
+
           {/* Add other routes here as we build more pages */}
           <Route
             path="/categories"
