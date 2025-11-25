@@ -7,16 +7,19 @@ import { queryClient } from "@/services/queryClient.ts";
 import AuthContextProvider from "./context/authContext.tsx";
 import { WishlistContextProvider } from "./context/WishlistContext.tsx";
 import { CartContextProvider } from "./context/CartContext.tsx";
+import PreferencesContextProvider from "./context/PreferencesContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        <WishlistContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </WishlistContextProvider>
+        <PreferencesContextProvider>
+          <WishlistContextProvider>
+            <CartContextProvider>
+              <App />
+            </CartContextProvider>
+          </WishlistContextProvider>
+        </PreferencesContextProvider>
       </AuthContextProvider>
     </QueryClientProvider>
   </StrictMode>

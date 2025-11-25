@@ -42,7 +42,7 @@ const ProductDetailsPage: React.FC = () => {
     () => productDetails ?? ({} as ProductData),
     [productId, productDetails]
   );
-  console.log({ product });
+
   const breadcrumbs = [
     { label: "All offers", href: "/" },
     {

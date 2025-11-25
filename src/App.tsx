@@ -9,6 +9,7 @@ import Wishlist from "./features/wishlist";
 import CartPage from "./features/cart";
 import { Toaster } from "./components/ui/sonner";
 import Auth from "./features/auth";
+import UserPreferences from "./features/preferences";
 import CheckoutPage from "./features/checkout";
 import ProfilePage from "./features/profile";
 import PurchaseHistory from "./features/purchase-history";
@@ -19,6 +20,7 @@ function App() {
       <ScrollToTop />
       <Toaster />
       <Auth />
+      <UserPreferences />
       <div className="bg-[#FAFAFA]">
         <Header />
         <Routes>

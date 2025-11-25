@@ -17,7 +17,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const handleAddtToCart = () => {
     addToCart(product, quantity);
   };
-  console.log(sizeColorSet);
 
   return (
     <div>
@@ -39,7 +38,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <div className="mb-5 border-b pb-4.5">
         <h4 className="font-semibold mb-2">Select size</h4>
         <div className="flex space-x-2">
-          {sizeColorSet.map((set, i) => (
+          {sizeColorSet?.map((set, i) => (
             <button
               key={i}
               className="px-4 py-2 bg-[#FFF1EE] rounded-full hover:bg-(--color-primary) focus:bg-(--color-primary) hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -54,7 +53,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <div className="mb-5 border-b pb-4.5">
         <h4 className="font-semibold mb-2">Select color</h4>
         <div className="flex space-x-2">
-          {sizeColorSet.map((set, i) => (
+          {sizeColorSet?.map((set, i) => (
             <button
               key={i}
               style={{ backgroundColor: set.color }}
