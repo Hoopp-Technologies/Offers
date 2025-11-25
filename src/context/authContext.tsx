@@ -52,7 +52,7 @@ export default function AuthContextProvider({
         // Profile failed to load, token is expired or invalid
         setLoggedIn(false);
         localStorage.removeItem("token");
-        toast.error("Session token has expired");
+        toast.error("Login session ended. Please login again");
       }
     } else {
       // No token, user is not logged in

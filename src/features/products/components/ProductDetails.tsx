@@ -2,17 +2,32 @@ import React, { useState } from "react";
 import { CartIcon } from "../../../components/icons";
 import { Check, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/context";
+import { useCart, usePreferences } from "@/context";
 import type { ProductData } from "@/services/products/types";
+import { getCurrencySymbol } from "@/utils/textUtils";
+import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface ProductDetailsProps {
   product: ProductData;
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
-  const { productName, discount, productDescription, sizeColorSet } = product;
+  const { selectedCurrency } = usePreferences();
+  const navigate = useNavigate();
+
+  const { productName, discount, productDescription, sizeColorSet, price } =
+    product;
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+
+  // Extract unique sizes and colors
+  const uniqueSizes = Array.from(
+    new Set(sizeColorSet?.map((set) => set.size) || [])
+  );
+  const uniqueColors = Array.from(
+    new Set(sizeColorSet?.map((set) => set.color) || [])
+  );
 
   const handleAddtToCart = () => {
     addToCart(product, quantity);
@@ -23,10 +38,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <h1 className="text-4xl font-bold mb-4.5">{productName}</h1>
       <div className="flex items-center mb-4.5">
         <span className="text-3xl font-bold text-black mr-4">
-          ₦{Number(0).toLocaleString()}
+          {getCurrencySymbol(selectedCurrency)}
+          {Number(price?.discountedPrice).toLocaleString()}
         </span>
         <span className="text-xl text-red-600 line-through">
-          ₦{Number(0).toLocaleString()}
+          {getCurrencySymbol(selectedCurrency)}
+          {Number(price?.originalPrice).toLocaleString()}
         </span>
       </div>
       <p className="font-bold">Description</p>
@@ -38,25 +55,30 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <div className="mb-5 border-b pb-4.5">
         <h4 className="font-semibold mb-2">Select size</h4>
         <div className="flex space-x-2">
-          {sizeColorSet?.map((set, i) => (
+          {uniqueSizes?.map((size, i) => (
             <button
               key={i}
               className="px-4 py-2 bg-[#FFF1EE] rounded-full hover:bg-(--color-primary) focus:bg-(--color-primary) hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
-              {set.size}
+              {size}
             </button>
           ))}
         </div>
       </div>
 
       {/* Color Selector */}
-      <div className="mb-5 border-b pb-4.5">
+      <div
+        className={cn(
+          "mb-5 border-b pb-4.5",
+          uniqueColors?.length > 0 ? "" : "hidden"
+        )}
+      >
         <h4 className="font-semibold mb-2">Select color</h4>
         <div className="flex space-x-2">
-          {sizeColorSet?.map((set, i) => (
+          {uniqueColors?.map((color, i) => (
             <button
               key={i}
-              style={{ backgroundColor: set.color }}
+              style={{ backgroundColor: color }}
               className="w-8 h-8 rounded-full border-2 group border-transparent flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500"
             >
               <Check
@@ -82,13 +104,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           />
         </div>
         <Button
-          onClick={handleAddtToCart}
+          onClick={() => {
+            handleAddtToCart();
+            navigate("/cart");
+          }}
           size={"lg"}
           className=" text-white px-6 py-6 text-lg rounded-md hover:bg-orange-600 grow"
         >
           Quick checkout
         </Button>
-        <button className="p-3 border border-black/60 rounded-full hover:bg-gray-100">
+        <button
+          onClick={handleAddtToCart}
+          className="p-3 border border-black/60 rounded-full hover:bg-gray-100"
+        >
           <CartIcon className="h-6 w-6" />
         </button>
       </div>

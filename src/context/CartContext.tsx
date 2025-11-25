@@ -1,11 +1,11 @@
 import React, { createContext, useContext } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
-import type { Product } from "@/utils/schema";
 import { useAddToCart } from "@/services/products/mutations";
 import { AuthContext } from "./authContext";
 import type { ProductData } from "@/services/products/types";
+import { usePreferences } from ".";
 
-export interface CartItem extends Product {
+export interface CartItem extends ProductData {
   quantity: number;
   selectedVariant?: string;
 }
@@ -39,6 +39,7 @@ export const CartContext = createContext<CartContextType>(CartDefaults);
 export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { selectedCurrency } = usePreferences();
   const [cartItems, setCartItems] = usePersistedState({
     key: "cart",
     defaultValue: [],
@@ -75,6 +76,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
       syncCart({
         offerId: product.id,
         quantity: quantity,
+        currencyCode: selectedCurrency,
       });
     }
   };
@@ -102,7 +104,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const cartTotal = (cartItems as CartItem[]).reduce(
-    (total, item) => total + item.currentPrice * item.quantity,
+    (total, item) => total + item.price.discountedPrice * item.quantity,
     0
   );
 

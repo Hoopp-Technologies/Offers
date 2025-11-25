@@ -7,3 +7,16 @@ export const capitalizeText = (text: string): string => {
   if (!text) return text;
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 };
+
+export const getCurrencySymbol = (currencyCode: string): string => {
+  switch (currencyCode) {
+    case "NGN":
+      return "₦";
+    case "USD":
+      return "$";
+    case "EUR":
+      return "€";
+    default:
+      return "";
+  }
+};

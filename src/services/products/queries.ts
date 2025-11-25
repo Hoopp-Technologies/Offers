@@ -21,3 +21,8 @@ export const useGetCart = createQuery<ProductData>({
   key: ["cart"],
   url: "ecommerce/customer/cart",
 });
+
+export const useGetTopCategories = createQuery<string[]>({
+  key: ["topCategories"],
+  url: "market-place/top-category",
+});

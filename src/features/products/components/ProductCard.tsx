@@ -8,12 +8,14 @@ import {
 } from "@/components/icons";
 import { Link } from "react-router-dom";
 // import { Button } from "@/components/ui/button";
-import { useCart, useWishlist } from "@/context";
+import { useCart, usePreferences, useWishlist } from "@/context";
 // import { toast } from "sonner";
 import type {
   ProductData,
   UnifiedProductType,
 } from "@/services/products/types";
+import { getCurrencySymbol } from "@/utils/textUtils";
+import { formatDistanceToNow } from "date-fns";
 
 interface ProductCardProps {
   product: UnifiedProductType;
@@ -21,14 +23,17 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+  const { selectedCurrency } = usePreferences();
   const {
     imageUrls,
     discountType,
     offerName,
+    productName,
     price,
     offerEndDate,
     discountValue,
     quantityBought,
+    productType,
     category,
     id,
     offerId,
@@ -76,13 +81,22 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         </div>
       );
     }
-    if (true) {
-      return (
-        <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full flex items-center z-10">
-          <ClockBadgeIcon className="h-4 w-4 mr-1" />
-          {offerEndDate}
-        </div>
-      );
+    if (offerEndDate) {
+      try {
+        const endDate = new Date(offerEndDate);
+        const timeRemaining = formatDistanceToNow(endDate, {
+          addSuffix: false,
+        });
+        return (
+          <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full flex items-center z-10">
+            <ClockBadgeIcon className="h-4 w-4 mr-1" />
+            {timeRemaining} left
+          </div>
+        );
+      } catch (error) {
+        console.error("Invalid date format:", offerEndDate);
+        return null;
+      }
     }
     return null;
   };
@@ -93,7 +107,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         <div className="relative">
           <img
             src={imageUrls?.[0]}
-            alt={offerName}
+            alt={offerName ?? productName}
             className="w-full h-40 object-cover"
           />
           {renderBadge()}
@@ -111,17 +125,19 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
         <div className="p-4 flex-1 flex flex-col">
           <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-            {offerName}
+            {offerName ?? productName}
           </h3>
           <div className="flex items-center mb-2 flex-wrap gap-2">
             <span className="text-xl font-bold text-red-600">
-              ₦{Number(0).toLocaleString()}
+              {getCurrencySymbol(selectedCurrency)}
+              {Number(price?.discountedPrice).toLocaleString()}
             </span>
             <span className="text-sm text-gray-500 line-through">
-              ₦{Number(0).toLocaleString()}
+              {getCurrencySymbol(selectedCurrency)}
+              {Number(price?.originalPrice).toLocaleString()}
             </span>
             <span className="bg-[#73BF451A] rounded-full px-3 py-0.5 text-xs whitespace-nowrap">
-              Save {discountValue}%
+              Save {discountValue ?? price?.discountValue}%
             </span>
           </div>
 
@@ -135,7 +151,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <MenuIcon className="h-2.5" />
-                {category}
+                {category ?? productType}
               </div>
             </div>
 

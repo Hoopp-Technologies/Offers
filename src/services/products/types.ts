@@ -3,11 +3,11 @@ export type ProductData = {
   productName: string;
   productDescription: string;
   type: string;
-  productPrice: number;
+  price: Price;
   productType: string;
   sizeColorSet: { size: string; color: string; quantity: number }[];
-  discountType: "PERCENTAGE";
-  triggerType: "MINIMUM_CART_VALUE";
+  discountType: DiscountType;
+  triggerType: TriggerType;
   offerEnds: string;
   discount: number;
   numberOfClaims: number;
@@ -15,15 +15,40 @@ export type ProductData = {
   orderQuantity: number;
 };
 
+export const DiscountType = {
+  PERCENTAGE: "PERCENTAGE",
+  FIXED_AMOUNT: "FIXED_AMOUNT",
+  TIERED: "TIERED",
+  BUY_X_GET_Y: "BUY_X_GET_Y",
+} as const;
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType];
+
+export const TriggerType = {
+  MINIMUM_CART_VALUE: "MINIMUM_CART_VALUE",
+  MINIMUM_QUANTITY: "MINIMUM_QUANTITY",
+  DONT_APPLY: "DONT_APPLY",
+} as const;
+
+export type TriggerType = (typeof TriggerType)[keyof typeof TriggerType];
+
+export type Price = {
+  currencyCode: "USD" | "NGN" | "EUR";
+  originalPrice: number;
+  discountedPrice: number;
+  discountType: DiscountType;
+  discountValue: number;
+};
+
 export type HomeOfferData = {
   offerId: string;
   offerName: string;
   offerEndDate: string;
-  price: number;
-  discountType: "PERCENTAGE";
+  price: Price;
+  discountType: DiscountType;
   discountValue: number;
   quantityBought: number;
-  category: "Digital";
+  category: "Physical" | "Service" | "Digital";
   imageUrls: string[];
 };
 

@@ -63,13 +63,17 @@ const UserPreferences = () => {
   const canSave = tempCurrency && tempCountry;
 
   return (
-    <Dialog open={showPreferences} onOpenChange={setShowPreferences}>
+    <Dialog open={showPreferences}>
       <DialogContent
         className="sm:max-w-md"
         aria-describedby="User Preferences Modal"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+        hideCloseButton
       >
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-medium">
+          <DialogTitle className="text-left text-2xl font-medium">
             Select Your Preferences
           </DialogTitle>
         </DialogHeader>

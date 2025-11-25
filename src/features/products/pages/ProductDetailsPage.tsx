@@ -6,6 +6,7 @@ import ProductImage from "../components/ProductImage";
 import ProductDetails from "../components/ProductDetails";
 import OfferDetail from "../components/OfferDetail";
 import MoreOffers from "../components/MoreOffers";
+import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
 import cake from "@/assets/cake.png";
 import { Flag, Share2 } from "lucide-react";
 import { HeartIcon } from "@/components/icons";
@@ -14,6 +15,7 @@ import { useWishlist } from "@/context";
 import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
+import { cn } from "@/lib/utils";
 
 const mockProduct: Product = {
   id: "1",
@@ -34,8 +36,15 @@ const ProductDetailsPage: React.FC = () => {
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
-  const { data: productDetails } = useGetOfferDetails({
+  const {
+    data: productDetails,
+    isLoading,
+    isRefetching,
+  } = useGetOfferDetails({
     path: productId,
+    queryParams: {
+      currencyCode: "USD",
+    },
   });
 
   const product = useMemo(
@@ -51,20 +60,28 @@ const ProductDetailsPage: React.FC = () => {
     },
     { label: product.productName, href: `#` },
   ];
+  const isWishlisted = isInWishlist(product.id ?? "");
 
   const handleWishlistClick = () => {
-    if (isInWishlist(product.id)) {
-      removeFromWishlist(mockProduct.id);
+    if (isWishlisted) {
+      removeFromWishlist(product.id ?? "");
     } else {
       addToWishlist(product);
     }
   };
 
+  console.log({ productDetails });
+
+  // Show skeleton while loading or refetching
+  if (isLoading || isRefetching) {
+    return <ProductDetailsSkeleton />;
+  }
+
   return (
     <main className="container mx-auto px-6 py-8 pt-32">
       <Breadcrumbs items={breadcrumbs} />
       <div className="bg-white border border-[#E5E9EB] rounded-3xl px-12 pb-20">
-        <OfferBanner />
+        <OfferBanner product={product} />
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mt-20">
           <div className="md:col-span-3 flex gap-8">
             <ProductImage
@@ -76,7 +93,9 @@ const ProductDetailsPage: React.FC = () => {
           <div className="border-l md:col-span-2 pl-8">
             <div className="flex justify-end items-center gap-[9px] text-(--color-muted) mb-4.5">
               <div
-                className="rounded-full bg-[#F4F6F5] p-2"
+                className={cn("rounded-full bg-[#F4F6F5] p-2", {
+                  "text-red-600": isWishlisted,
+                })}
                 onClick={handleWishlistClick}
               >
                 <HeartIcon className="h-6" />

@@ -1,6 +1,7 @@
 import { CalendarDays, Percent } from "lucide-react";
 import React from "react";
 import type { ProductData } from "@/services/products/types";
+import { format } from "date-fns";
 
 const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
   return (
@@ -17,7 +18,8 @@ const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
           <li className="flex items-center gap-1.5">
             <CalendarDays color="#808080" />
             <span>
-              Discount offer ends <strong>{data.offerEnds}</strong>
+              Discount offer ends on{" "}
+              <strong>{format(data.offerEnds, "dd MMM, yyyy")}</strong>
             </span>
           </li>
           <li className="flex items-center gap-1.5">
@@ -34,13 +36,15 @@ const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
         </div>
       </div>
       <div className="mt-4 flex items-center">
-        <div className="flex -space-x-1 mr-3 text-white [&>p]:flex [&>p]:justify-center [&>p]:items-center [&>p]:h-8 [&>p]:w-8 [&>p]:rounded-full [&>p]:ring-2 [&>p]:ring-white [&>p]:bg-(--color-primary) [&>p]:text-center">
-          <p>K</p>
-          <p>M</p>
-          <p>C</p>
-        </div>
+        {data?.numberOfClaims > 0 && (
+          <div className="flex -space-x-1 mr-3 text-white [&>p]:flex [&>p]:justify-center [&>p]:items-center [&>p]:h-8 [&>p]:w-8 [&>p]:rounded-full [&>p]:ring-2 [&>p]:ring-white [&>p]:bg-(--color-primary) [&>p]:text-center">
+            <p>K</p>
+            <p>M</p>
+            <p>C</p>
+          </div>
+        )}
         <p className="text-sm text-gray-600">
-          10 people have claimed this offer.
+          {data?.numberOfClaims ?? 0} people have claimed this offer.
         </p>
       </div>
     </div>

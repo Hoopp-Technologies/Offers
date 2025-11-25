@@ -1,9 +1,16 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 import { useGetAllOffers } from "@/services/products/queries";
+import { usePreferences } from "@/context";
 
 const MoreOffers: React.FC = () => {
-  const { data } = useGetAllOffers({});
+  const { selectedCurrency } = usePreferences();
+  const { data } = useGetAllOffers({
+    queryParams: {
+      currencyCode: selectedCurrency,
+    },
+    enabled: !!selectedCurrency,
+  });
 
   return (
     <section className="py-12">

@@ -1,19 +1,26 @@
-import HeroSection from "../products/components/HeroSection";
-import FilterSection from "../products/components/FilterSection";
-import ProductGrid from "../products/components/ProductGrid";
-import LoadMoreButton from "../products/components/LoadMoreButton";
+import HeroSection from "../products/components/HomeHeroSection";
 import { useGetAllOffers } from "@/services/products/queries";
+import { usePreferences } from "@/context";
+import HomeCategories from "./components/HomeCategories";
+import OffersSection from "./components/OffersSection";
 
 export const Home = () => {
-  const { data, isLoading } = useGetAllOffers({});
+  const { selectedCurrency } = usePreferences();
+  const { data, isLoading } = useGetAllOffers({
+    queryParams: {
+      currencyCode: selectedCurrency,
+    },
+    enabled: !!selectedCurrency,
+  });
 
   console.log({ data, isLoading });
   return (
-    <div className="pt-20">
+    <div className="pt-18">
       <HeroSection />
-      <FilterSection />
-      <ProductGrid data={data} />
-      <LoadMoreButton />
+      <div className="-mt-10">
+        <HomeCategories />
+      </div>
+      <OffersSection data={data} />
     </div>
   );
 };

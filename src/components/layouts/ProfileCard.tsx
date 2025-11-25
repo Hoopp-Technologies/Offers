@@ -7,9 +7,11 @@ import { CartIcon, HeartIcon, UserIcon } from "../icons";
 import { Link } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context";
 
 const ProfileCard = () => {
   const [open, setOpen] = useState(false);
+  const { setLoggedIn } = useAuth();
   return (
     <div>
       <HoverCard openDelay={1} open={open} onOpenChange={setOpen}>
@@ -46,7 +48,11 @@ const ProfileCard = () => {
           </div>
           <hr />
           <p
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              localStorage.removeItem("token");
+              setLoggedIn(false);
+              setOpen(false);
+            }}
             className="text-red-500 cursor-pointer flex items-center gap-3 px-4 pt-2"
           >
             <LogOut className="h-5 w-5 mr-1" /> Logout

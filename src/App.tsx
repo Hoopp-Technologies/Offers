@@ -13,6 +13,7 @@ import UserPreferences from "./features/preferences";
 import CheckoutPage from "./features/checkout";
 import ProfilePage from "./features/profile";
 import PurchaseHistory from "./features/purchase-history";
+import { Products } from "./features/home/category";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
           <Route path="/products/:productId" element={<ProductDetailsPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart" element={<CartPage />} />

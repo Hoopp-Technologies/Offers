@@ -51,7 +51,7 @@ const Header: React.FC = () => {
                 {title}
               </Link>
             ))}
-            {true && <ProfileCard />}
+            {loggedIn && <ProfileCard />}
           </nav>
 
           {/* CTA Button */}

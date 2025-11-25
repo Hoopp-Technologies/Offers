@@ -1,14 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useCart } from "@/context";
-import { Link, useLocation } from "react-router-dom";
+import { useAuth, useCart, usePreferences } from "@/context";
+import { getCurrencySymbol } from "@/utils/textUtils";
+import { Link } from "react-router-dom";
 
 const CartSummary = () => {
-  const { cartTotal } = useCart();
-  const path = useLocation().pathname;
-  const isCheckout = path === "/checkout";
-  console.log({ isCheckout });
+  const { cartTotal, cartItems } = useCart();
+  const { loggedIn, setShowAuth } = useAuth();
+
+  const { selectedCurrency } = usePreferences();
+  const savedDiscount = cartItems.reduce(
+    (total, item) =>
+      total +
+      (item.price.originalPrice - item.price.discountedPrice) * item.quantity,
+    0
+  );
 
   return (
     <div className="col-span-5 lg:col-span-2">
@@ -18,11 +25,17 @@ const CartSummary = () => {
           <div className=" mt-7 space-y-4">
             <div className="flex items-center justify-between">
               <p>Cart subtotal</p>
-              <p className=" font-semibold">₦{cartTotal.toLocaleString()}</p>
+              <p className=" font-semibold">
+                {getCurrencySymbol(selectedCurrency)}
+                {cartTotal.toLocaleString()}
+              </p>
             </div>
             <div className="flex items-center justify-between">
               <p>Discount</p>
-              <p className=" font-semibold">-N2,500</p>
+              <p className=" font-semibold">
+                -{getCurrencySymbol(selectedCurrency)}
+                {savedDiscount.toLocaleString()}
+              </p>
             </div>
           </div>
           {/* <div className="flex justify-end">
@@ -67,13 +80,23 @@ const CartSummary = () => {
             <p>Cart Total</p>
             <p className=" font-semibold">₦{cartTotal.toLocaleString()}</p>
           </div>
-          <Button
-            asChild
-            className="rounded-full text-lg py-6 w-full"
-            size={"lg"}
-          >
-            <Link to={"/checkout"}>Proceed to Checkout</Link>
-          </Button>
+          {!loggedIn ? (
+            <Button
+              onClick={() => setShowAuth(true)}
+              className="rounded-full text-lg py-6 w-full"
+              size={"lg"}
+            >
+              Login to Proceed
+            </Button>
+          ) : (
+            <Button
+              asChild
+              className="rounded-full text-lg py-6 w-full"
+              size={"lg"}
+            >
+              <Link to={"/checkout"}>Proceed to Checkout</Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>
