@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { HeartIcon, CartIcon, PlusCircleIcon } from "../icons";
 import { Logo } from "../../assets";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context";
-import { cn } from "@/lib/utils";
 import ProfileCard from "./ProfileCard";
 // import { NavigationMenuDemo } from "./NavMenu";
 
@@ -27,7 +25,6 @@ const Header: React.FC = () => {
     },
   ];
 
-  const { setShowAuth, loggedIn } = useAuth();
   return (
     <section className="fixed w-full z-50">
       <header className="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
@@ -51,22 +48,25 @@ const Header: React.FC = () => {
                 {title}
               </Link>
             ))}
-            {loggedIn && <ProfileCard />}
+            <ProfileCard />
           </nav>
 
           {/* CTA Button */}
-          <div className={cn("", loggedIn && "hidden")}>
-            <Button
-              className="px-4"
-              size={"lg"}
-              onClick={() => setShowAuth(true)}
-            >
+          <div>
+            <Button className="px-4" size={"lg"}>
               {/* <Link
                 to="/auth"
                 className="bg-(--color-primary) text-white px-4 rounded-md hover:bg-orange-600"
               > */}
-              <PlusCircleIcon />
-              Sell on RewardClan
+              <a
+                href="https://staging.rewardclan.com"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="flex gap-2 items-center"
+              >
+                <PlusCircleIcon />
+                Sell on RewardClan
+              </a>
               {/* </Link> */}
             </Button>
           </div>

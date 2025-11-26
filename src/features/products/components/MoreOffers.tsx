@@ -4,12 +4,13 @@ import { useGetAllOffers } from "@/services/products/queries";
 import { usePreferences } from "@/context";
 
 const MoreOffers: React.FC = () => {
-  const { selectedCurrency } = usePreferences();
+  const { selectedCurrency, selectedCountry } = usePreferences();
   const { data } = useGetAllOffers({
     queryParams: {
       currencyCode: selectedCurrency,
+      country: selectedCountry,
     },
-    enabled: !!selectedCurrency,
+    enabled: !!selectedCurrency && !!selectedCountry,
   });
 
   return (

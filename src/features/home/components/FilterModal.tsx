@@ -1,38 +1,66 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { type Dispatch, type SetStateAction } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Droplet, List, Tag, Calendar } from "lucide-react";
+import { DiscountType } from "@/services/products/types";
+import { useGetTopCategories } from "@/services/products/queries";
+import useFilterStore from "@/store/filter";
 
-const FilterModal = ({ open, onOpenChange }: {open : boolean, onOpenChange :  Dispatch<SetStateAction<boolean>>}) => {
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [category, setCategory] = useState("Experience");
-  const [discountType, setDiscountType] = useState("Percentage");
-  const [offerDuration, setOfferDuration] = useState("24 hours");
+const FilterModal = ({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const {
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    category,
+    setCategory,
+    discountType,
+    setDiscountType,
+    offerDuration,
+    setOfferDuration,
+    setIsApplied,
+  } = useFilterStore((state) => state);
+  const { data: categories } = useGetTopCategories();
 
-  const categories = ["Beauty & wellness", "Experience"];
-  const discountTypes = ["Percentage", "Flat fee"];
+  const discountTypes = Object.keys(DiscountType);
+  console.log(discountTypes);
   const durations = ["24 hours", "48 hours", "7 days", "14 days"];
 
   const handleClearFilter = () => {
     setMinPrice("");
     setMaxPrice("");
-    setCategory("Experience");
-    setDiscountType("Percentage");
-    setOfferDuration("24 hours");
+    setCategory("");
+    setDiscountType("");
+    setOfferDuration("");
+    setIsApplied(false);
+    onOpenChange(false);
   };
 
   const handleApplyFilter = () => {
+    setIsApplied(true);
     console.log({ minPrice, maxPrice, category, discountType, offerDuration });
     onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} >
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">Apply filter</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">
+            Apply filter
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
@@ -65,8 +93,8 @@ const FilterModal = ({ open, onOpenChange }: {open : boolean, onOpenChange :  Di
               <List className="w-5 h-5 text-gray-600" />
               <span className="font-medium">Category</span>
             </div>
-            <div className="flex gap-2">
-              {categories.map((cat) => (
+            <div className="flex gap-2 flex-wrap">
+              {categories?.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setCategory(cat)}
@@ -88,7 +116,7 @@ const FilterModal = ({ open, onOpenChange }: {open : boolean, onOpenChange :  Di
               <Tag className="w-5 h-5 text-gray-600" />
               <span className="font-medium">Discount type</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {discountTypes.map((type) => (
                 <button
                   key={type}

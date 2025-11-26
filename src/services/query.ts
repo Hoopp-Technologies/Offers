@@ -12,7 +12,7 @@ export interface definitionOptions {
 }
 
 export interface usageOptions<TData> {
-  queryParams?: Record<string, string | number>;
+  queryParams?: Record<string, string | number | undefined>;
   enabled?: boolean;
   path?: string;
   onSuccess?: (data: TData, ...args: Record<string, unknown>[]) => void;
@@ -32,7 +32,7 @@ export const createQuery = <TData, TError = Error>(
     if (path) {
       fullUrl = url + (url.length > 0 ? "/" : "") + path;
     }
-    
+
     const mergeOptions = {
       ...definitionOptions.options,
       ...rest, //usage options
@@ -62,7 +62,9 @@ export const createQuery = <TData, TError = Error>(
   return useQueryFn;
 };
 
-const transformFiltersToKey = (filters: Record<string, string | number>) => {
+const transformFiltersToKey = (
+  filters: Record<string, string | number | undefined>
+) => {
   keysToRemoveFromQueryKey.forEach((key) => {
     delete filters[key];
   });

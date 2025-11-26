@@ -26,3 +26,8 @@ export const useGetTopCategories = createQuery<string[]>({
   key: ["topCategories"],
   url: "market-place/top-category",
 });
+
+export const useProductsFilter = createQuery<any>({
+  key: ["market-place/search-filter"],
+  url: "market-place/search-filter",
+});

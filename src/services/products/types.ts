@@ -13,6 +13,7 @@ export type ProductData = {
   numberOfClaims: number;
   cartValue: number;
   orderQuantity: number;
+  imageUrls: string[];
 };
 
 export const DiscountType = {

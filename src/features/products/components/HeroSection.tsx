@@ -1,7 +1,9 @@
 import React from "react";
 import { SearchIcon } from "../../../components/icons"; // Adjust path as needed
+import useFilterStore from "@/store/filter";
 
 const HeroSection: React.FC = () => {
+  const { search, setSearch } = useFilterStore((state) => state);
   return (
     <section className="bg-gray-50 py-40">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-center">
@@ -18,6 +20,8 @@ const HeroSection: React.FC = () => {
             <input
               type="text"
               placeholder="Search deals and offers"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full py-3 pl-4 pr-12 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
             <SearchIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />

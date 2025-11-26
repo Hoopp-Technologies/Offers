@@ -1,9 +1,16 @@
+import HomeProductsSkeleton from "@/features/products/components/HomeProductsSkeleton";
 import ProductCard from "@/features/products/components/ProductCard";
 import type { HomeData } from "@/services/products/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 
-const OffersSection = ({ data }: { data?: HomeData }) => {
+const OffersSection = ({
+  data,
+  isLoading,
+}: {
+  data?: HomeData;
+  isLoading?: boolean;
+}) => {
   const topOffersRef = useRef<HTMLDivElement>(null);
   const bottomOffersRef = useRef<HTMLDivElement>(null);
 
@@ -55,15 +62,19 @@ const OffersSection = ({ data }: { data?: HomeData }) => {
           className="flex gap-4 overflow-x-auto scrollbar-hide py-2"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {data?.topOffers?.map((product) => (
-            <div
-              key={product.offerId}
-              className="shrink-0"
-              style={{ minWidth: "280px" }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
+          {isLoading ? (
+            <HomeProductsSkeleton />
+          ) : (
+            data?.topOffers?.map((product) => (
+              <div
+                key={product.offerId}
+                className="shrink-0"
+                style={{ minWidth: "280px" }}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))
+          )}
         </div>
       </div>
       <div className="mb-24">
@@ -98,15 +109,19 @@ const OffersSection = ({ data }: { data?: HomeData }) => {
           className="flex gap-4 overflow-x-auto scrollbar-hide"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {data?.topOffers?.map((product) => (
-            <div
-              key={product.offerId}
-              className="shrink-0"
-              style={{ minWidth: "280px" }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
+          {isLoading ? (
+            <HomeProductsSkeleton />
+          ) : (
+            data?.topOffers?.map((product) => (
+              <div
+                key={product.offerId}
+                className="shrink-0"
+                style={{ minWidth: "280px" }}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

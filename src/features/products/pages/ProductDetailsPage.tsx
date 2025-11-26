@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import type { Product } from "../../../utils/schema";
 import Breadcrumbs from "../components/Breadcrumbs";
 import OfferBanner from "../components/OfferBanner";
 import ProductImage from "../components/ProductImage";
@@ -7,7 +6,6 @@ import ProductDetails from "../components/ProductDetails";
 import OfferDetail from "../components/OfferDetail";
 import MoreOffers from "../components/MoreOffers";
 import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
-import cake from "@/assets/cake.png";
 import { Flag, Share2 } from "lucide-react";
 import { HeartIcon } from "@/components/icons";
 import { useGetOfferDetails } from "@/services/products/queries";
@@ -16,20 +14,6 @@ import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
 import { cn } from "@/lib/utils";
-
-const mockProduct: Product = {
-  id: "1",
-  title: "Adidas Crocs Viper",
-  currentPrice: 64,
-  originalPrice: 80,
-  discountPercentage: 20,
-  boughtCount: 10,
-  category: "Shoes",
-  badgeType: "",
-  imageUrl: cake,
-  description:
-    'The "Adidas Crocs Viper" has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-};
 
 const ProductDetailsPage: React.FC = () => {
   const { productId } = useParams();
@@ -53,9 +37,9 @@ const ProductDetailsPage: React.FC = () => {
   );
 
   const breadcrumbs = [
-    { label: "All offers", href: "/" },
+    { label: "All offers", href: "/products" },
     {
-      label: capitalizeText(product.type),
+      label: capitalizeText(product.type?.replaceAll("_", " ")),
       href: `#`,
     },
     { label: product.productName, href: `#` },
@@ -85,8 +69,8 @@ const ProductDetailsPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mt-20">
           <div className="md:col-span-3 flex gap-8">
             <ProductImage
-              imageUrl={mockProduct.imageUrl}
-              title={mockProduct.title}
+              imageUrls={product.imageUrls}
+              title={product?.productName}
             />
             <ProductDetails product={product} />
           </div>

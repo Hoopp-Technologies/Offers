@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FilterIcon } from "../../../components/icons";
-import { ProductCategory } from "../../../utils/enums";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -17,16 +16,24 @@ import {
   LayoutList,
   Megaphone,
 } from "lucide-react";
+import { useGetTopCategories } from "@/services/products/queries";
 
 const FilterSection: React.FC = () => {
-  const categories = Object.values(ProductCategory);
+  const { data: categories } = useGetTopCategories();
+
   const [open, setOpen] = useState(false);
   const sortOptions = [
-    { text: "Popularity", icon: <Megaphone size={18} color="#808080"/> },
-    { text: "Newest", icon: <LayoutList size={18} color="#808080"/> },
-    { text: "Highest discount", icon: <ArrowUpNarrowWide size={18} color="#808080"/> },
-    { text: "Lowest price", icon: <ArrowDownWideNarrow size={18} color="#808080"/> },
-    { text: "Expiring soon", icon: <ClockFading size={18} color="#808080"/> },
+    { text: "Popularity", icon: <Megaphone size={18} color="#808080" /> },
+    { text: "Newest", icon: <LayoutList size={18} color="#808080" /> },
+    {
+      text: "Highest discount",
+      icon: <ArrowUpNarrowWide size={18} color="#808080" />,
+    },
+    {
+      text: "Lowest price",
+      icon: <ArrowDownWideNarrow size={18} color="#808080" />,
+    },
+    { text: "Expiring soon", icon: <ClockFading size={18} color="#808080" /> },
   ];
 
   return (
@@ -43,7 +50,7 @@ const FilterSection: React.FC = () => {
 
         {/* Category Pills */}
         <div className="flex gap-y-2 flex-wrap justify-center md:justify-start space-x-2 mb-4 md:mb-0">
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <span
               key={category}
               className="px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm cursor-pointer hover:bg-gray-300"
