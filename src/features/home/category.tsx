@@ -48,15 +48,22 @@ export const Products = () => {
       endingInDays: offerDuration,
     },
     enabled: !!selectedCurrency && !!selectedCountry,
-    onSuccess: () => {
-      setIsApplied(false);
-    },
   });
   console.log({ filterData, isApplied });
 
+  // Trigger refetch when filters are applied
   useEffect(() => {
-    refetch();
-  }, [isApplied]);
+    if (isApplied) {
+      refetch();
+    }
+  }, [isApplied, refetch]);
+
+  // Reset isApplied after refetch completes
+  useEffect(() => {
+    if (!filterRefetching && isApplied) {
+      setIsApplied(false);
+    }
+  }, [filterRefetching, isApplied, setIsApplied]);
 
   return (
     <div className="pt-20">
