@@ -11,6 +11,7 @@ import { Droplet, List, Tag, Calendar } from "lucide-react";
 import { DiscountType } from "@/services/products/types";
 import { useGetTopCategories } from "@/services/products/queries";
 import useFilterStore from "@/store/filter";
+import { toast } from "sonner";
 
 const FilterModal = ({
   open,
@@ -45,12 +46,14 @@ const FilterModal = ({
     setOfferDuration("");
     setIsApplied(true);
     onOpenChange(false);
+    toast.success("Filter cleared successfully");
   };
 
   const handleApplyFilter = () => {
     setIsApplied(true);
     console.log({ minPrice, maxPrice, category, discountType, offerDuration });
     onOpenChange(false);
+    toast.success("Filter applied successfully");
   };
 
   return (
