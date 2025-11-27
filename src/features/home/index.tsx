@@ -14,8 +14,6 @@ export const Home = () => {
     enabled: !!selectedCurrency && !!selectedCountry,
   });
 
-  console.log({ data, isLoading });
-
   return (
     <div className="pt-18">
       <HeroSection />

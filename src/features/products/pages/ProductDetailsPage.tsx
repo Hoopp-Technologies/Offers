@@ -54,8 +54,6 @@ const ProductDetailsPage: React.FC = () => {
     }
   };
 
-  console.log({ productDetails });
-
   // Show skeleton while loading or refetching
   if (isLoading || isRefetching) {
     return <ProductDetailsSkeleton />;

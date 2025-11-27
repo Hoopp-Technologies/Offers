@@ -1,12 +1,12 @@
 import HomeProductsSkeleton from "./HomeProductsSkeleton";
 import ProductCard from "./ProductCard";
-import type { HomeData } from "@/services/products/types";
+import type { HomeOfferData } from "@/services/products/types";
 
 const ProductGrid = ({
   data,
   isLoading,
 }: {
-  data?: HomeData;
+  data?: HomeOfferData[];
   isLoading: boolean;
 }) => {
   return (
@@ -21,7 +21,7 @@ const ProductGrid = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-8">
-            {data?.topOffers?.map((product) => (
+            {data?.map((product) => (
               <ProductCard key={product.offerId} product={product} />
             ))}
           </div>

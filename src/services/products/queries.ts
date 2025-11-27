@@ -12,7 +12,7 @@ export const useGetOfferDetails = createQuery<ProductData>({
   url: "market-place/offer",
 });
 
-export const useGetWishlist = createQuery<ProductData>({
+export const useGetWishlist = createQuery<ProductData[]>({
   key: ["wishlist"],
   url: "ecommerce/customer/wishlist",
 });

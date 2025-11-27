@@ -35,7 +35,6 @@ const FilterModal = ({
   const { data: categories } = useGetTopCategories();
 
   const discountTypes = Object.keys(DiscountType);
-  console.log(discountTypes);
   const durations = ["24 hours", "48 hours", "7 days", "14 days"];
 
   const handleClearFilter = () => {
@@ -44,7 +43,7 @@ const FilterModal = ({
     setCategory("");
     setDiscountType("");
     setOfferDuration("");
-    setIsApplied(false);
+    setIsApplied(true);
     onOpenChange(false);
   };
 

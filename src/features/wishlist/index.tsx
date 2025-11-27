@@ -14,8 +14,6 @@ const Wishlist: React.FC = () => {
     removeFromWishlist(product.id);
   };
 
-  console.log({ wishlistItems });
-
   return (
     <main className="container mx-auto px-6 py-8 pt-32">
       <div className="mb-12">

@@ -1,9 +1,10 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
 import { useAddToCart } from "@/services/products/mutations";
 import { AuthContext } from "./authContext";
 import type { ProductData } from "@/services/products/types";
 import { usePreferences } from ".";
+import { useGetCart } from "@/services/products/queries";
 
 export interface CartItem extends ProductData {
   quantity: number;
@@ -46,6 +47,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const { loggedIn } = useContext(AuthContext);
   const { mutate: syncCart } = useAddToCart({});
+  const { data: cart } = useGetCart({});
 
   const addToCart = (product: ProductData, quantity = 1, variant?: string) => {
     console.log("addToCart called", {
@@ -112,6 +114,12 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     (count, item) => count + item.quantity,
     0
   );
+
+  useEffect(() => {
+    if (cart) {
+      setCartItems(cart);
+    }
+  }, [cart, loggedIn]);
 
   return (
     <CartContext.Provider

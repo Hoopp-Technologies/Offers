@@ -1,12 +1,10 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
-import {
-  useAddToWishlistFn,
-  useDeleteFromWishlistFn,
-} from "@/services/products/mutations";
+import Axios from "@/services";
 import { AuthContext } from "./authContext";
 import { toast } from "sonner";
 import type { ProductData } from "@/services/products/types";
+import { useGetWishlist } from "@/services/products/queries";
 
 interface WishlistContextType {
   wishlistItems: ProductData[];
@@ -36,32 +34,53 @@ export const WishlistContextProvider: React.FC<{
   });
   const { loggedIn } = useContext(AuthContext);
 
-  const addToWishlist = (product: ProductData) => {
+  const addToWishlist = async (product: ProductData) => {
     if (isInWishlist(product.id)) return;
+
     const newItems = [...(wishlistItems as ProductData[]), product];
     setWishlistItems(newItems);
+
     if (loggedIn) {
-      // Assuming backend accepts the product ID or the whole product object
-      // Adjust payload based on backend requirements.
-      // For now sending productId.
-      const useAddToWishlist = useAddToWishlistFn(product.id);
-      const { mutate: syncWishlist } = useAddToWishlist({});
-      syncWishlist({});
+      try {
+        const token = localStorage.getItem("token");
+        await Axios.post(
+          `ecommerce/customer/wishlist/${product.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Failed to sync wishlist to backend:", error);
+        // Optionally revert the local state if backend sync fails
+        // setWishlistItems(wishlistItems as ProductData[]);
+      }
     }
 
     toast.success("Offer has been added to wishlist");
   };
 
-  const removeFromWishlist = (productId: string) => {
+  const removeFromWishlist = async (productId: string) => {
     const newItems = (wishlistItems as ProductData[]).filter(
       (item) => item.id !== productId
     );
     setWishlistItems(newItems);
+
     if (loggedIn) {
-      // TODO: Handle backend removal if API supports it separately or sync full list
-      const useAddToWishlist = useDeleteFromWishlistFn(productId);
-      const { mutate: removeFromWishlist } = useAddToWishlist({});
-      removeFromWishlist({});
+      try {
+        const token = localStorage.getItem("token");
+        await Axios.delete(`ecommerce/customer/wishlist/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error("Failed to remove from wishlist on backend:", error);
+        // Optionally revert the local state if backend sync fails
+        // setWishlistItems(wishlistItems as ProductData[]);
+      }
     }
 
     toast.success("Offer has been removed from wishlist");
@@ -69,7 +88,6 @@ export const WishlistContextProvider: React.FC<{
 
   const clearWishlist = () => {
     setWishlistItems([]);
-
     toast.success("Wishlist has been cleared");
   };
 
@@ -78,6 +96,16 @@ export const WishlistContextProvider: React.FC<{
       (item) => item.id === productId
     );
   };
+
+  const { data: wishlist } = useGetWishlist({
+    enabled: !!loggedIn,
+  });
+
+  useEffect(() => {
+    if (wishlist) {
+      setWishlistItems(wishlist);
+    }
+  }, [wishlist, loggedIn]);
 
   // Sync on login could be handled here or in a separate effect
   // For now, we rely on the user adding items to trigger sync or initial load logic (not fully defined in PRD)

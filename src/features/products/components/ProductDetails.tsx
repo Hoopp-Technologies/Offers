@@ -36,7 +36,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const handleAddtToCart = () => {
     addToCart(product, quantity);
   };
-  console.log({ uniqueColors, uniqueSizes });
+
   return (
     <div>
       <div className="flex flex-col justify-between h-full">

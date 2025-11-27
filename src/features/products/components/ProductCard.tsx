@@ -102,7 +102,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   };
 
   return (
-    <Link to={`/products/${offerId}`} className="block h-full">
+    <Link to={`/products/${offerId ?? id}`} className="block h-full">
       <div className="bg-white rounded-lg shadow-md overflow-hidden group relative h-full flex flex-col">
         <div className="relative">
           <img
