@@ -53,7 +53,7 @@ export const WishlistContextProvider: React.FC<{
           }
         );
       } catch (error) {
-        console.error("Failed to sync wishlist to backend:", error);
+        console.error("Failed to sync wishlist to server:", error);
         // Optionally revert the local state if backend sync fails
         // setWishlistItems(wishlistItems as ProductData[]);
       }

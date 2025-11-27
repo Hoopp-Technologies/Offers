@@ -5,6 +5,7 @@ import { AuthContext } from "./authContext";
 import type { ProductData } from "@/services/products/types";
 import { usePreferences } from ".";
 import { useGetCart } from "@/services/products/queries";
+import Axios from "@/services";
 
 export interface CartItem extends ProductData {
   quantity: number;
@@ -83,11 +84,26 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = async (productId: string) => {
     const newItems = (cartItems as CartItem[]).filter(
       (item) => item.id !== productId
     );
     setCartItems(newItems);
+
+    if (loggedIn) {
+      try {
+        const token = localStorage.getItem("token");
+        await Axios.delete(`ecommerce/customer/cart/items/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error("Failed to remove from cart on server:", error);
+        // Optionally revert the local state if backend sync fails
+        // setWishlistItems(wishlistItems as ProductData[]);
+      }
+    }
   };
 
   const updateQuantity = (productId: string, quantity: number) => {

@@ -2,12 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth, useCart, usePreferences } from "@/context";
+import { useCheckout } from "@/services/products/mutations";
 import { getCurrencySymbol } from "@/utils/textUtils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 const CartSummary = () => {
   const { cartTotal, cartItems } = useCart();
   const { loggedIn, setShowAuth } = useAuth();
+  const { mutate: checkout } = useCheckout({
+    onSuccess() {
+      toast.success("Checkout successful");
+    },
+  });
+  const pathname = useLocation().pathname;
 
   const { selectedCurrency } = usePreferences();
   const savedDiscount = cartItems.reduce(
@@ -16,6 +24,28 @@ const CartSummary = () => {
       (item.price.originalPrice - item.price.discountedPrice) * item.quantity,
     0
   );
+
+  const handleCheckout = () => {
+    if (!pathname.includes("checkout")) return;
+
+    checkout({
+      cartId: 0,
+      cartItems: [
+        {
+          quantity: 0,
+          claimedOfferPrice: 0,
+          offerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          currencyCode: "string",
+        },
+      ],
+      claimedFinalPrice: 0,
+      requiredDetails: {
+        additionalProp1: "string",
+        additionalProp2: "string",
+        additionalProp3: "string",
+      },
+    });
+  };
 
   return (
     <div className="col-span-5 lg:col-span-2">
@@ -90,7 +120,7 @@ const CartSummary = () => {
             </Button>
           ) : (
             <Button
-              asChild
+              onClick={handleCheckout}
               className="rounded-full text-lg py-6 w-full"
               size={"lg"}
             >
