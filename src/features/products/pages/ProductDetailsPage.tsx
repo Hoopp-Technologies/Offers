@@ -9,7 +9,7 @@ import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
 import { Flag, Share2 } from "lucide-react";
 import { HeartIcon } from "@/components/icons";
 import { useGetOfferDetails } from "@/services/products/queries";
-import { useWishlist } from "@/context";
+import { usePreferences, useWishlist } from "@/context";
 import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 
 const ProductDetailsPage: React.FC = () => {
   const { productId } = useParams();
+  const { selectedCurrency } = usePreferences();
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -27,7 +28,7 @@ const ProductDetailsPage: React.FC = () => {
   } = useGetOfferDetails({
     path: productId,
     queryParams: {
-      currencyCode: "USD",
+      currencyCode: selectedCurrency,
     },
   });
 
@@ -53,6 +54,7 @@ const ProductDetailsPage: React.FC = () => {
       addToWishlist(product);
     }
   };
+  console.log({ productDetails });
 
   // Show skeleton while loading or refetching
   if (isLoading || isRefetching) {

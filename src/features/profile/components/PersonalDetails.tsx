@@ -13,8 +13,10 @@ import { useUpdateProfile } from "@/services/profile/mutations";
 import type { ProfileData } from "@/services/profile/types";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { COUNTRIES } from "@/features/checkout/components/CheckoutForm";
+import { State } from "country-state-city";
 
 type PersonalDetailsFormData = {
   firstName: string;
@@ -50,6 +52,8 @@ const PersonalDetails = ({
     },
   });
 
+  const primaryAddress = data?.addresses.find((addy) => addy.isPrimary);
+
   const { register, handleSubmit, setValue, watch, reset } =
     useForm<PersonalDetailsFormData>({
       defaultValues: {
@@ -57,11 +61,13 @@ const PersonalDetails = ({
         lastName: data?.lastName || "",
         email: data?.email || "",
         phoneNumber: data?.phoneNumber || "",
-        gender: "",
-        deliveryCountry: "",
-        deliveryState: "",
-        deliveryZipCode: "",
-        deliveryAddress: "",
+        gender: data?.gender || "",
+        deliveryCountry:
+          COUNTRIES.find((country) => country.name === primaryAddress?.country)
+            ?.code || "",
+        deliveryState: primaryAddress?.province || "",
+        deliveryZipCode: primaryAddress?.zipCode || "",
+        deliveryAddress: primaryAddress?.location || "",
         isPrimary: true,
         billingCountry: "",
         billingState: "",
@@ -73,16 +79,19 @@ const PersonalDetails = ({
   // Update form values when data changes
   useEffect(() => {
     if (data) {
+      const primaryAddress = data.addresses.find((addy) => addy.isPrimary);
       reset({
         firstName: data.firstName || "",
         lastName: data.lastName || "",
         email: data.email || "",
         phoneNumber: data.phoneNumber || "",
-        gender: "",
-        deliveryCountry: "",
-        deliveryState: "",
-        deliveryZipCode: "",
-        deliveryAddress: "",
+        gender: data.gender || "",
+        deliveryCountry:
+          COUNTRIES.find((country) => country.name === primaryAddress?.country)
+            ?.code || "",
+        deliveryState: primaryAddress?.province || "",
+        deliveryZipCode: primaryAddress?.zipCode || "",
+        deliveryAddress: primaryAddress?.location || "",
         isPrimary: true,
         billingCountry: "",
         billingState: "",
@@ -97,8 +106,11 @@ const PersonalDetails = ({
       firstName: formData.firstName,
       lastName: formData.lastName,
       phoneNumber: formData.phoneNumber,
-      addressRequest: {
-        country: formData.deliveryCountry,
+      gender: formData.gender,
+      primaryAddress: {
+        country: COUNTRIES.find(
+          (country) => country.code === formData.deliveryCountry
+        )?.name,
         province: formData.deliveryState,
         location: formData.deliveryAddress,
         zipCode: formData.deliveryZipCode,
@@ -106,6 +118,14 @@ const PersonalDetails = ({
       },
     });
   };
+
+  const selectedCountry = watch("deliveryCountry");
+
+  // Get states for selected country
+  const states = useMemo(() => {
+    if (!selectedCountry) return [];
+    return State.getStatesOfCountry(selectedCountry);
+  }, [selectedCountry]);
 
   return (
     <form
@@ -168,9 +188,8 @@ const PersonalDetails = ({
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="MALE">Male</SelectItem>
+                  <SelectItem value="FEMALE">Female</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -194,9 +213,11 @@ const PersonalDetails = ({
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="nigeria">Nigeria</SelectItem>
-                  <SelectItem value="ghana">Ghana</SelectItem>
-                  <SelectItem value="kenya">Kenya</SelectItem>
+                  {COUNTRIES.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -205,14 +226,25 @@ const PersonalDetails = ({
               <Select
                 value={watch("deliveryState")}
                 onValueChange={(value) => setValue("deliveryState", value)}
+                disabled={!selectedCountry || states.length === 0}
               >
                 <SelectTrigger className="shadow-none h-auto py-2.5">
-                  <SelectValue placeholder="Select state" />
+                  <SelectValue
+                    placeholder={
+                      !selectedCountry
+                        ? "Select country first"
+                        : states.length === 0
+                        ? "No states available"
+                        : "Select state"
+                    }
+                  />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="lagos">Lagos</SelectItem>
-                  <SelectItem value="abuja">Abuja</SelectItem>
-                  <SelectItem value="kano">Kano</SelectItem>
+                <SelectContent className="max-h-[300px] overflow-y-scroll">
+                  {states.map((state) => (
+                    <SelectItem key={state.isoCode} value={state.name}>
+                      {state.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

@@ -4,47 +4,49 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAuth, useCart, usePreferences } from "@/context";
 import { useCheckout } from "@/services/products/mutations";
 import { getCurrencySymbol } from "@/utils/textUtils";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { transformCart } from "../utils";
+import type { PayloadType } from "@/services/mutation";
+//@ts-ignore
+import PaystackPop from "@paystack/inline-js";
 
 const CartSummary = () => {
   const { cartTotal, cartItems } = useCart();
   const { loggedIn, setShowAuth } = useAuth();
-  const { mutate: checkout } = useCheckout({
-    onSuccess() {
+  const navigate = useNavigate();
+
+  const { mutate: checkout, isPending } = useCheckout({
+    onSuccess(data) {
       toast.success("Checkout successful");
+      const popup = new PaystackPop();
+      const trans = popup.resumeTransaction(data.accessCode);
+      trans.onSuccess = (trans: any) => {
+        console.log(trans);
+        navigate(`/purchase-success?transactionId=${data.transactionId}`);
+      };
+      trans.onError = () => {
+        toast.error("Payment failed");
+      };
     },
   });
+  // access code = 6tw1zo4ybbao65f
   const pathname = useLocation().pathname;
 
   const { selectedCurrency } = usePreferences();
-  const savedDiscount = cartItems.reduce(
+  const savedDiscount = cartItems?.reduce(
     (total, item) =>
       total +
-      (item.price.originalPrice - item.price.discountedPrice) * item.quantity,
+      ((item?.price?.originalPrice ?? item.originalPrice ?? 0) -
+        (item?.price?.discountedPrice ?? item.discountedPrice ?? 0)) *
+        item?.quantity,
     0
   );
 
   const handleCheckout = () => {
     if (!pathname.includes("checkout")) return;
-
-    checkout({
-      cartId: 0,
-      cartItems: [
-        {
-          quantity: 0,
-          claimedOfferPrice: 0,
-          offerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          currencyCode: "string",
-        },
-      ],
-      claimedFinalPrice: 0,
-      requiredDetails: {
-        additionalProp1: "string",
-        additionalProp2: "string",
-        additionalProp3: "string",
-      },
-    });
+    const checkoutObject = transformCart(cartItems);
+    checkout(checkoutObject as unknown as PayloadType);
   };
 
   return (
@@ -77,32 +79,40 @@ const CartSummary = () => {
         <div className="px-8 py-5 border-b pr-12">
           <p className=" font-bold">Choose payment method</p>
 
-          <RadioGroup defaultValue="option-one">
-            <div className="flex items-start space-x-2 mt-5">
-              <RadioGroupItem value="option-one" id="option-one" />
-              <Label htmlFor="option-one" className="cursor-pointer">
-                <div className="">
-                  <p className="font-medium mb-2">Pay with Stripe</p>
-                  <p className="text-sm text-(--color-muted)">
-                    Stripe processes VISA, Mastercard, Google Pay and more. 1.5%
-                    processing fee will apply to your order.
-                  </p>
-                </div>
-              </Label>
-            </div>
-            <div className="flex items-start space-x-2 mt-5">
-              <RadioGroupItem value="option-two" id="option-two" />
-              <Label htmlFor="option-two" className="cursor-pointer">
-                <div className="">
-                  <p className=" font-medium mb-2">Pay with Paystack</p>
-                  <p className="text-sm text-(--color-muted)">
-                    Paystack is the preferred payment option for Nigerians and
-                    other African countries who want to enjoy mobile money, bank
-                    transfer or USSD payment options.
-                  </p>
-                </div>
-              </Label>
-            </div>
+          <RadioGroup
+            defaultValue={
+              selectedCurrency !== "NGN" ? "option-one" : "option-two"
+            }
+          >
+            {selectedCurrency !== "NGN" && (
+              <div className="flex items-start space-x-2 mt-5">
+                <RadioGroupItem value="option-one" id="option-one" />
+                <Label htmlFor="option-one" className="cursor-pointer">
+                  <div className="">
+                    <p className="font-medium mb-2">Pay with Stripe</p>
+                    <p className="text-sm text-(--color-muted)">
+                      Stripe processes VISA, Mastercard, Google Pay and more.
+                      1.5% processing fee will apply to your order.
+                    </p>
+                  </div>
+                </Label>
+              </div>
+            )}
+            {selectedCurrency === "NGN" && (
+              <div className="flex items-start space-x-2 mt-5">
+                <RadioGroupItem value="option-two" id="option-two" />
+                <Label htmlFor="option-two" className="cursor-pointer">
+                  <div className="">
+                    <p className=" font-medium mb-2">Pay with Paystack</p>
+                    <p className="text-sm text-(--color-muted)">
+                      Paystack is the preferred payment option for Nigerians and
+                      other African countries who want to enjoy mobile money,
+                      bank transfer or USSD payment options.
+                    </p>
+                  </div>
+                </Label>
+              </div>
+            )}
           </RadioGroup>
         </div>
         <div className=" py-6 px-8">
@@ -121,6 +131,8 @@ const CartSummary = () => {
           ) : (
             <Button
               onClick={handleCheckout}
+              loading={isPending}
+              disabled={isPending}
               className="rounded-full text-lg py-6 w-full"
               size={"lg"}
             >

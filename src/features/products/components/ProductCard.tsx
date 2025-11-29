@@ -14,7 +14,7 @@ import type {
   ProductData,
   UnifiedProductType,
 } from "@/services/products/types";
-import { getCurrencySymbol } from "@/utils/textUtils";
+import { capitalizeText, getCurrencySymbol } from "@/utils/textUtils";
 import { formatDistanceToNow } from "date-fns";
 
 interface ProductCardProps {
@@ -151,7 +151,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               </div>
               <div className="flex gap-1.5 items-center">
                 <MenuIcon className="h-2.5" />
-                {category ?? productType}
+                {capitalizeText(category ?? productType ?? "")}
               </div>
             </div>
 

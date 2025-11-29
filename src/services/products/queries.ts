@@ -1,5 +1,5 @@
 import { createQuery } from "../query";
-import type { HomeData, ProductData } from "./types";
+import type { CartRes, HomeData, ProductData } from "./types";
 export const getOfferByIdKey = (arg: string) => ["/market-place/offer", arg];
 
 export const useGetAllOffers = createQuery<HomeData>({
@@ -17,7 +17,7 @@ export const useGetWishlist = createQuery<ProductData[]>({
   url: "ecommerce/customer/wishlist",
 });
 
-export const useGetCart = createQuery<ProductData>({
+export const useGetCart = createQuery<CartRes>({
   key: ["cart"],
   url: "ecommerce/customer/cart",
 });

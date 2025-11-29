@@ -1,4 +1,5 @@
 import { createMutation } from "../mutation";
+import type { CheckoutRes } from "./types";
 
 export const useAddToCart = createMutation({
   method: "POST",
@@ -23,7 +24,7 @@ export const useDeleteFromCartFn = (id: string) =>
     url: `ecommerce/customer/cart/items/${id}`,
   });
 
-export const useCheckout = createMutation({
+export const useCheckout = createMutation<CheckoutRes>({
   method: "POST",
   url: `ecommerce/checkout`,
 });

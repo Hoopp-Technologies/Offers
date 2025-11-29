@@ -12,8 +12,9 @@ import Auth from "./features/auth";
 import UserPreferences from "./features/preferences";
 import CheckoutPage from "./features/checkout";
 import ProfilePage from "./features/profile";
-import PurchaseHistory from "./features/purchase-history";
+import PurchaseHistory from "./features/purchase/partials/purchase-history";
 import { Products } from "./features/home/category";
+import PurchaseSuccess from "./features/purchase/partials/purchase-success";
 
 function App() {
   return (
@@ -33,31 +34,9 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/purchase-history" element={<PurchaseHistory />} />
+          <Route path="/purchase-success" element={<PurchaseSuccess />} />
 
           {/* Add other routes here as we build more pages */}
-          <Route
-            path="/categories"
-            element={
-              <h1 className="text-4xl font-bold text-blue-600">
-                Categories Page
-              </h1>
-            }
-          />
-
-          <Route
-            path="/profile"
-            element={
-              <h1 className="text-4xl font-bold text-blue-600">
-                My Profile Page
-              </h1>
-            }
-          />
-          <Route
-            path="/sell"
-            element={
-              <h1 className="text-4xl font-bold text-blue-600">Sell Page</h1>
-            }
-          />
         </Routes>
         <Footer />
       </div>

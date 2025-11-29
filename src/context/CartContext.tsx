@@ -2,14 +2,22 @@ import React, { createContext, useContext, useEffect } from "react";
 import usePersistedState from "@/hooks/usePersistedState";
 import { useAddToCart } from "@/services/products/mutations";
 import { AuthContext } from "./authContext";
-import type { ProductData } from "@/services/products/types";
+import type { DiscountType, ProductData } from "@/services/products/types";
 import { usePreferences } from ".";
 import { useGetCart } from "@/services/products/queries";
 import Axios from "@/services";
 
 export interface CartItem extends ProductData {
+  cartItemId: number;
+  offerId: string;
+  offerName: string;
   quantity: number;
-  selectedVariant?: string;
+  originalPrice: number;
+  discountedPrice: number;
+  discountValue: number;
+  discountType: DiscountType;
+  totalPrice: number;
+  imageUrl: string[];
 }
 
 interface CartContextType {
@@ -48,7 +56,9 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   });
   const { loggedIn } = useContext(AuthContext);
   const { mutate: syncCart } = useAddToCart({});
-  const { data: cart } = useGetCart({});
+  const { data: cart } = useGetCart({
+    enabled: loggedIn,
+  });
 
   const addToCart = (product: ProductData, quantity = 1, variant?: string) => {
     console.log("addToCart called", {
@@ -59,7 +69,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     });
     const currentItems = cartItems as CartItem[];
     const existingItemIndex = currentItems.findIndex(
-      (item) => item.id === product.id
+      (item) => (item.offerId ?? item.id) === product.id
     );
     console.log("existingItemIndex", existingItemIndex);
 
@@ -86,18 +96,21 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const removeFromCart = async (productId: string) => {
     const newItems = (cartItems as CartItem[]).filter(
-      (item) => item.id !== productId
+      (item) => (item.offerId ?? item.id) !== productId
     );
     setCartItems(newItems);
 
     if (loggedIn) {
       try {
         const token = localStorage.getItem("token");
-        await Axios.delete(`ecommerce/customer/cart/items/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await Axios.delete(
+          `ecommerce/customer/cart/items/${productId}?cartId=${cart?.cartId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       } catch (error) {
         console.error("Failed to remove from cart on server:", error);
         // Optionally revert the local state if backend sync fails
@@ -111,9 +124,11 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
       removeFromCart(productId);
       return;
     }
+
     const newItems = (cartItems as CartItem[]).map((item) =>
-      item.id === productId ? { ...item, quantity } : item
+      (item.id ?? item.offerId) === productId ? { ...item, quantity } : item
     );
+
     setCartItems(newItems);
   };
 
@@ -122,18 +137,21 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const cartTotal = (cartItems as CartItem[]).reduce(
-    (total, item) => total + item.price.discountedPrice * item.quantity,
+    (total, item) =>
+      total +
+      (item?.price?.discountedPrice ?? item?.discountedPrice ?? 0) *
+        item?.quantity,
     0
   );
 
   const cartCount = (cartItems as CartItem[]).reduce(
-    (count, item) => count + item.quantity,
+    (count, item) => count + item?.quantity,
     0
   );
 
   useEffect(() => {
     if (cart) {
-      setCartItems(cart);
+      setCartItems(cart.cartItems);
     }
   }, [cart, loggedIn]);
 

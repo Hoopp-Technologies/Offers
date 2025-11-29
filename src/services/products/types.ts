@@ -1,3 +1,5 @@
+import type { CartItem } from "@/context/CartContext";
+
 export type ProductData = {
   id: string;
   productName: string;
@@ -14,6 +16,7 @@ export type ProductData = {
   cartValue: number;
   orderQuantity: number;
   imageUrls: string[];
+  brandName: string;
 };
 
 export const DiscountType = {
@@ -68,4 +71,17 @@ export type UnifiedProductType = Partial<ProductData> &
 export type HomeData = {
   topOffers: HomeOfferData[];
   recentlyAddedOffers: HomeOfferData[];
+};
+
+export type CheckoutRes = {
+  transactionId: string;
+  finalAmount: number;
+  status: "PENDING" | "SUCCESS" | "FAILED";
+  accessCode: string;
+};
+
+export type CartRes = {
+  cartId: number;
+  cartTotal: number;
+  cartItems: CartItem[];
 };

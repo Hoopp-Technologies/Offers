@@ -13,10 +13,10 @@ import { useEffect, useMemo } from "react";
 import { State } from "country-state-city";
 
 // Define 5 constant countries
-const COUNTRIES = [
+export const COUNTRIES = [
+  { code: "NG", name: "Nigeria" },
   { code: "US", name: "United States" },
   { code: "GB", name: "United Kingdom" },
-  { code: "NG", name: "Nigeria" },
   { code: "CA", name: "Canada" },
   { code: "DE", name: "Germany" },
 ];
@@ -65,12 +65,22 @@ const CheckoutForm = () => {
   // Preload form data from profile
   useEffect(() => {
     if (profileData) {
+      const primaryAddress = profileData.addresses.find(
+        (address) => address.isPrimary
+      );
       setValue("fullName", `${profileData.firstName} ${profileData.lastName}`);
       setValue("email", profileData.email);
       setValue("phoneNumber", profileData.phoneNumber);
       // If addresses exist, use the first one
       if (profileData.addresses && profileData.addresses.length > 0) {
-        setValue("deliveryAddress", profileData.addresses[0]);
+        setValue("deliveryAddress", primaryAddress?.location ?? "");
+        setValue(
+          "country",
+          COUNTRIES.find((country) => country.code === primaryAddress?.country)
+            ?.code ?? ""
+        );
+        setValue("state", primaryAddress?.province ?? "");
+        setValue("zipCode", primaryAddress?.zipCode ?? "");
       }
     }
   }, [profileData, setValue]);
