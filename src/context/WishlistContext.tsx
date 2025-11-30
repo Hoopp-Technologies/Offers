@@ -64,7 +64,7 @@ export const WishlistContextProvider: React.FC<{
 
   const removeFromWishlist = async (productId: string) => {
     const newItems = (wishlistItems as ProductData[]).filter(
-      (item) => item.id !== productId
+      (item) => (item.id ?? item.offerId) !== productId
     );
     setWishlistItems(newItems);
 
@@ -93,7 +93,7 @@ export const WishlistContextProvider: React.FC<{
 
   const isInWishlist = (productId: string) => {
     return (wishlistItems as ProductData[]).some(
-      (item) => item.id === productId
+      (item) => (item.id ?? item.offerId) === productId
     );
   };
 

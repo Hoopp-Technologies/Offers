@@ -54,7 +54,6 @@ const ProductDetailsPage: React.FC = () => {
       addToWishlist(product);
     }
   };
-  console.log({ productDetails });
 
   // Show skeleton while loading or refetching
   if (isLoading || isRefetching) {

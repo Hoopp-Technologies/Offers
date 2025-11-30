@@ -1,12 +1,11 @@
 import { CalendarDays, Copy, Eye, MailOpen, Phone } from "lucide-react";
 import { useState } from "react";
-import cake from "@/assets/cake.png";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import type { PurchaseHistoryItem } from "@/services/profile/types";
 
 const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
-  const [status, setStatus] = useState("USED");
+  const [status] = useState("USED");
   const getColorScheme = (status: string) => {
     switch (status) {
       case "USED":
@@ -32,7 +31,11 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
         Unused
       </p>
       <div className="flex mb-6 items-center gap-2.5">
-        <img src={cake} alt="" className="w-2/5 rounded-[10px]" />
+        <img
+          src={item?.imageUrls?.[0]}
+          alt=""
+          className="w-2/5 rounded-[10px] h-24 border"
+        />
         <div className="">
           <h3 className="text-[22px] font-semibold mb-2 leading-8">
             {item.offerName}

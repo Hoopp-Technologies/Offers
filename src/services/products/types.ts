@@ -2,6 +2,7 @@ import type { CartItem } from "@/context/CartContext";
 
 export type ProductData = {
   id: string;
+  offerId: string;
   productName: string;
   productDescription: string;
   type: string;

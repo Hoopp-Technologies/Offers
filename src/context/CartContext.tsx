@@ -61,17 +61,11 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const addToCart = (product: ProductData, quantity = 1, variant?: string) => {
-    console.log("addToCart called", {
-      product,
-      quantity,
-      variant,
-      currentItems: cartItems,
-    });
     const currentItems = cartItems as CartItem[];
     const existingItemIndex = currentItems.findIndex(
       (item) => (item.offerId ?? item.id) === product.id
     );
-    console.log("existingItemIndex", existingItemIndex);
+    // console.log("existingItemIndex", existingItemIndex);
 
     let newItems;
     if (existingItemIndex > -1) {

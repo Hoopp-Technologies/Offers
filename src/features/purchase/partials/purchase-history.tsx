@@ -1,9 +1,9 @@
-import { useWishlist } from "@/context";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import PurchaseHistoryCard from "../components/PurchaseHistoryCard";
+import PurchaseHistorySkeleton from "../components/PurchaseHistorySkeleton";
 import { useGetPurchaseHistory } from "@/services/profile/queries";
 
 const PurchaseHistory = () => {
@@ -19,8 +19,6 @@ const PurchaseHistory = () => {
       pageNumber: 0,
     },
   });
-
-  console.log({ data });
 
   useEffect(() => {
     refetch();
@@ -67,10 +65,16 @@ const PurchaseHistory = () => {
         </Tabs>
       </div>
 
-      {data?.content?.length === 0 ? (
+      {isLoading || isRefetching ? (
+        <PurchaseHistorySkeleton />
+      ) : data?.content?.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-xl text-gray-500">
-            Your're yet to make a purchase.
+            {tabValue === "PENDING"
+              ? "You have no pending purchases."
+              : tabValue === "CLAIMED"
+              ? "You have no redeemed vouchers."
+              : "You're yet to make a purchase."}
           </p>
         </div>
       ) : (

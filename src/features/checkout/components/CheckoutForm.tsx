@@ -33,14 +33,14 @@ interface CheckoutFormData {
 }
 
 const CheckoutForm = () => {
-  const { data: profileData, isLoading } = useGetProfile();
+  const { data: profileData, isLoading, isRefetching } = useGetProfile();
 
   const {
     register,
     control,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<CheckoutFormData>({
     defaultValues: {
       fullName: "",
@@ -68,23 +68,25 @@ const CheckoutForm = () => {
       const primaryAddress = profileData.addresses.find(
         (address) => address.isPrimary
       );
+
       setValue("fullName", `${profileData.firstName} ${profileData.lastName}`);
       setValue("email", profileData.email);
       setValue("phoneNumber", profileData.phoneNumber);
+      setValue("gender", profileData.gender);
       // If addresses exist, use the first one
       if (profileData.addresses && profileData.addresses.length > 0) {
         setValue("deliveryAddress", primaryAddress?.location ?? "");
         setValue(
           "country",
-          COUNTRIES.find((country) => country.code === primaryAddress?.country)
+          COUNTRIES.find((country) => country.name === primaryAddress?.country)
             ?.code ?? ""
         );
         setValue("state", primaryAddress?.province ?? "");
         setValue("zipCode", primaryAddress?.zipCode ?? "");
       }
     }
-  }, [profileData, setValue]);
-
+  }, [profileData, setValue, isLoading, isRefetching]);
+  console.log({ isValid });
   // Reset state when country changes
   useEffect(() => {
     setValue("state", "");
@@ -189,7 +191,7 @@ const CheckoutForm = () => {
                 </SelectTrigger>
                 <SelectContent className="max-h-[300px] overflow-y-scroll">
                   {states.map((state) => (
-                    <SelectItem key={state.isoCode} value={state.isoCode}>
+                    <SelectItem key={state.isoCode} value={state.name}>
                       {state.name}
                     </SelectItem>
                   ))}
@@ -272,9 +274,8 @@ const CheckoutForm = () => {
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="MALE">Male</SelectItem>
+                  <SelectItem value="FEMALE">Female</SelectItem>
                 </SelectContent>
               </Select>
             )}
