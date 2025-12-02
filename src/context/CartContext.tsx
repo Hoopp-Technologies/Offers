@@ -6,6 +6,7 @@ import type { DiscountType, ProductData } from "@/services/products/types";
 import { usePreferences } from ".";
 import { useGetCart } from "@/services/products/queries";
 import Axios from "@/services";
+import { toast } from "sonner";
 
 export interface CartItem extends ProductData {
   cartItemId: number;
@@ -32,6 +33,8 @@ interface CartContextType {
   clearCart: () => void;
   cartTotal: number;
   cartCount: number;
+  cartId: number;
+  setCartId: (cartId: number) => void;
 }
 
 const CartDefaults: CartContextType = {
@@ -42,6 +45,8 @@ const CartDefaults: CartContextType = {
   updateQuantity: () => undefined,
   cartTotal: 0,
   cartCount: 0,
+  cartId: 0,
+  setCartId: () => undefined,
 };
 
 export const CartContext = createContext<CartContextType>(CartDefaults);
@@ -53,6 +58,10 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cartItems, setCartItems] = usePersistedState({
     key: "cart",
     defaultValue: [],
+  });
+  const [cartId, setCartId] = usePersistedState({
+    key: "cartId",
+    defaultValue: 0,
   });
   const { loggedIn } = useContext(AuthContext);
   const { mutate: syncCart } = useAddToCart({});
@@ -79,6 +88,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     setCartItems(newItems);
+    toast.success("Product added to cart");
     if (loggedIn) {
       syncCart({
         offerId: product.id,
@@ -146,6 +156,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (cart) {
       setCartItems(cart.cartItems);
+      setCartId(cart.cartId);
     }
   }, [cart, loggedIn]);
 
@@ -159,6 +170,8 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
         clearCart,
         cartTotal,
         cartCount,
+        cartId,
+        setCartId,
       }}
     >
       {children}

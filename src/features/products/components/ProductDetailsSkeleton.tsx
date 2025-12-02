@@ -23,7 +23,7 @@ const ProductDetailsSkeleton = () => {
           <div className="md:col-span-3 flex gap-8">
             {/* Product Image Skeleton */}
             <div className="shrink-0">
-              <Skeleton className="h-96 w-96 rounded-lg" />
+              <Skeleton className="h-96 w-60 rounded-lg" />
             </div>
 
             {/* Product Details Skeleton */}

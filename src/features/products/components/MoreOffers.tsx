@@ -15,12 +15,12 @@ const MoreOffers: React.FC = () => {
 
   return (
     <section className="py-12">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto">
         <h2 className="text-2xl font-bold mb-2">More offers by same vendor</h2>
         <p className="text-gray-600 mb-6">
           Interested in this vendor? check out more of their offers
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {data?.recentlyAddedOffers.map((product) => (
             <ProductCard key={product.offerId} product={product} />
           ))}

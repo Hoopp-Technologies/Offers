@@ -10,19 +10,25 @@ import { transformCart } from "../utils";
 import type { PayloadType } from "@/services/mutation";
 //@ts-ignore
 import PaystackPop from "@paystack/inline-js";
+import { useGetCart } from "@/services/products/queries";
 
 const CartSummary = () => {
-  const { cartTotal, cartItems } = useCart();
+  const { cartTotal, cartItems, cartId, setCartId } = useCart();
   const { loggedIn, setShowAuth } = useAuth();
   const navigate = useNavigate();
+  const { data: cart, refetch: refetchCart } = useGetCart({
+    enabled: false,
+  });
 
   const { mutate: checkout, isPending } = useCheckout({
     onSuccess(data) {
-      toast.success("Checkout successful");
+      refetchCart();
+      setCartId(cart?.cartId as number);
       const popup = new PaystackPop();
       const trans = popup.resumeTransaction(data.accessCode);
       trans.onSuccess = (trans: any) => {
         console.log(trans);
+        toast.success("Checkout successful");
         navigate(`/purchase-success?transactionId=${data.transactionId}`);
       };
       trans.onError = () => {
@@ -45,7 +51,7 @@ const CartSummary = () => {
 
   const handleCheckout = () => {
     if (!pathname.includes("checkout")) return;
-    const checkoutObject = transformCart(cartItems);
+    const checkoutObject = transformCart(cartItems, cartId);
     checkout(checkoutObject as unknown as PayloadType);
   };
 

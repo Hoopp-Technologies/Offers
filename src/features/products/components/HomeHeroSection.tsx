@@ -9,7 +9,7 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto px-6 flex flex-col items-center justify-center">
         {/* Left Content */}
         <div className="text-center md:text-left mb-8 md:mb-0">
-          <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-4">
+          <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-4 text-center">
             Find the best offers and discounts online
           </h1>
           <p className="text-lg text-gray-600 mb-10 text-center">

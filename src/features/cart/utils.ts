@@ -11,7 +11,10 @@ interface TransformedCart {
   claimedFinalPrice: number;
 }
 
-export function transformCart(items: CartItem[]): TransformedCart {
+export function transformCart(
+  items: CartItem[],
+  cartId: number
+): TransformedCart {
   const cartItems = items.map((item) => ({
     claimedOfferPrice: item.totalPrice * item.quantity,
     offerId: item.offerId,
@@ -25,7 +28,7 @@ export function transformCart(items: CartItem[]): TransformedCart {
   );
 
   return {
-    cartId: 1,
+    cartId,
     cartItems,
     claimedFinalPrice,
   };

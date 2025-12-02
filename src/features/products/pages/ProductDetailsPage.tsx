@@ -65,7 +65,7 @@ const ProductDetailsPage: React.FC = () => {
       <Breadcrumbs items={breadcrumbs} />
       <div className="bg-white border border-[#E5E9EB] rounded-3xl px-12 pb-20">
         <OfferBanner product={product} />
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-20">
           <div className="md:col-span-3 flex gap-8">
             <ProductImage
               imageUrls={product.imageUrls}
@@ -73,20 +73,20 @@ const ProductDetailsPage: React.FC = () => {
             />
             <ProductDetails product={product} />
           </div>
-          <div className="border-l md:col-span-2 pl-8">
+          <div className="border-t lg:border-t-0 lg:border-l lg:col-span-2 pl-8 pt-4 lg:pt-0">
             <div className="flex justify-end items-center gap-[9px] text-(--color-muted) mb-4.5">
               <div
-                className={cn("rounded-full bg-[#F4F6F5] p-2", {
+                className={cn("rounded-full bg-[#F4F6F5] p-2 cursor-pointer", {
                   "text-red-600": isWishlisted,
                 })}
                 onClick={handleWishlistClick}
               >
                 <HeartIcon className="h-6" />
               </div>
-              <div className="rounded-full bg-[#F4F6F5] p-2">
+              <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
                 <Share2 className="h-6" />
               </div>
-              <div className="rounded-full bg-[#F4F6F5] p-2">
+              <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
                 <Flag className="h-6" />
               </div>
             </div>

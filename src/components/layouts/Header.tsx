@@ -4,9 +4,11 @@ import { HeartIcon, CartIcon, PlusCircleIcon } from "../icons";
 import { Logo } from "../../assets";
 import { Button } from "@/components/ui/button";
 import ProfileCard from "./ProfileCard";
+import { useCart } from "@/context";
 // import { NavigationMenuDemo } from "./NavMenu";
 
 const Header: React.FC = () => {
+  const { cartItems } = useCart();
   const navLinks = [
     // {
     //   title: "Categories",
@@ -20,7 +22,16 @@ const Header: React.FC = () => {
     },
     {
       title: "Cart",
-      icon: <CartIcon className="h-5 w-5 mr-1" color="#808080" />,
+      icon: (
+        <div className="relative">
+          <CartIcon className="h-5 w-5 mr-1" color="#808080" />
+          {cartItems.length > 0 && (
+            <span className="absolute top-[-10px] right-[-8px] bg-red-600 text-white text-[10px] w-[20px] h-[20px] rounded-full flex items-center justify-center">
+              {cartItems.length}
+            </span>
+          )}
+        </div>
+      ),
       url: "/cart",
     },
   ];
@@ -59,7 +70,7 @@ const Header: React.FC = () => {
                 className="bg-(--color-primary) text-white px-4 rounded-md hover:bg-orange-600"
               > */}
               <a
-                href="https://staging.rewardclan.com"
+                href="https://app.rewardclan.com"
                 rel="noopener noreferrer"
                 target="_blank"
                 className="flex gap-2 items-center"
