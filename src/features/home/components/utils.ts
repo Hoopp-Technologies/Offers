@@ -4,10 +4,13 @@ export const getDaysRemaining = (endDate: string) => {
       return 1;
     case "48 hours":
       return 2;
+    case "Expiring soon":
+      return 3;
     case "7 days":
       return 7;
     case "14 days":
       return 14;
+
     default:
       return undefined;
   }

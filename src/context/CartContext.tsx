@@ -35,6 +35,7 @@ interface CartContextType {
   cartCount: number;
   cartId: number;
   setCartId: (cartId: number) => void;
+  isInCart: (productId: string) => boolean;
 }
 
 const CartDefaults: CartContextType = {
@@ -47,6 +48,7 @@ const CartDefaults: CartContextType = {
   cartCount: 0,
   cartId: 0,
   setCartId: () => undefined,
+  isInCart: () => false,
 };
 
 export const CartContext = createContext<CartContextType>(CartDefaults);
@@ -140,6 +142,12 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     setCartItems([]);
   };
 
+  const isInCart = (productId: string) => {
+    return (cartItems as CartItem[]).some(
+      (item) => (item.id ?? item.offerId) === productId
+    );
+  };
+
   const cartTotal = (cartItems as CartItem[]).reduce(
     (total, item) =>
       total +
@@ -172,6 +180,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
         cartCount,
         cartId,
         setCartId,
+        isInCart,
       }}
     >
       {children}

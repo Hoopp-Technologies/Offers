@@ -1,4 +1,4 @@
-// import React from "react";
+import { useState } from "react";
 import {
   FireIcon,
   ClockBadgeIcon,
@@ -16,6 +16,7 @@ import type {
 } from "@/services/products/types";
 import { capitalizeText, getCurrencySymbol } from "@/utils/textUtils";
 import { formatDistanceToNow } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ProductCardProps {
   product: UnifiedProductType;
@@ -41,6 +42,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const isWishlisted = isInWishlist(offerId ?? id ?? "");
   console.log({
@@ -72,6 +74,22 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   //   }
   // };
 
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? (imageUrls?.length || 1) - 1 : prev - 1
+    );
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) =>
+      prev === (imageUrls?.length || 1) - 1 ? 0 : prev + 1
+    );
+  };
+
   const renderBadge = () => {
     if (discountType === "PERCENTAGE") {
       return (
@@ -101,16 +119,52 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     return null;
   };
 
+  const hasMultipleImages = imageUrls && imageUrls.length > 1;
+
   return (
     <Link to={`/products/${offerId ?? id}`} className="block h-full">
       <div className="bg-white rounded-lg shadow-md overflow-hidden group relative h-full flex flex-col">
         <div className="relative">
           <img
-            src={imageUrls?.[0]}
+            src={imageUrls?.[currentImageIndex] || imageUrls?.[0]}
             alt={offerName ?? productName}
             className="w-full h-40 object-cover"
           />
           {renderBadge()}
+
+          {/* Image Navigation Arrows */}
+          {hasMultipleImages && (
+            <>
+              <button
+                onClick={handlePrevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-4 w-4 text-gray-800" />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-4 w-4 text-gray-800" />
+              </button>
+
+              {/* Image Indicators */}
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                {imageUrls.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`h-1.5 w-1.5 rounded-full transition-all ${
+                      index === currentImageIndex
+                        ? "bg-white w-3"
+                        : "bg-white/50"
+                    }`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
           {/* <button
             onClick={handleWishlistClick}
             className={`absolute top-2 left-2 p-1.5 rounded-full bg-white/80 hover:bg-white transition-colors z-10 ${

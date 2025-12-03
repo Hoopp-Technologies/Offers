@@ -1,8 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InstagramIcon, LinkedInIcon, FacebookIcon } from "../icons";
+import useFilterStore from "@/store/filter";
 
 const Footer: React.FC = () => {
+  const navigate = useNavigate();
+  const { setOfferDuration, setIsApplied } = useFilterStore();
+
+  const handleExpiringSoonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOfferDuration("Expiring soon");
+    setIsApplied(true);
+    navigate("/products");
+  };
   return (
     <footer className="bg-white text-black py-12">
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -75,7 +85,8 @@ const Footer: React.FC = () => {
             </li>
             <li className="mb-4">
               <Link
-                to="/deals"
+                to="/products"
+                onClick={handleExpiringSoonClick}
                 className="hover:underline hover:text-(--color-primary)"
               >
                 Expiring soon
@@ -174,7 +185,9 @@ const Footer: React.FC = () => {
           the best of our ability, users are encouraged to review offer details
           carefully before making any purchase or claim.
         </p>
-        <p className="text-(--color-muted) mt-6">&copy; 2025, Hoopp Technologies Inc</p>
+        <p className="text-(--color-muted) mt-6">
+          &copy; 2025, Hoopp Technologies Inc
+        </p>
       </div>
     </footer>
   );

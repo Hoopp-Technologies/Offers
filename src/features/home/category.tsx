@@ -67,7 +67,9 @@ export const Products = () => {
   return (
     <div className="pt-20">
       <HeroSection />
-      <FilterSection />
+      <div className="sticky top-[78px] z-50">
+        <FilterSection />
+      </div>
       <ProductGrid
         data={filterData}
         isLoading={filterLoading || filterRefetching}

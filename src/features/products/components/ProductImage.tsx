@@ -12,11 +12,14 @@ const ProductImage: React.FC<ProductImageProps> = ({ imageUrls, title }) => {
   if (imageUrls?.length === 0) return null;
   return (
     <div className="mb-8 max-w-3xs">
-      <img
-        src={selectedUrl}
-        alt={title}
-        className="w-ful h-auto object-cover rounded-lg shadow-md min-h-96 w-full"
-      />
+      <div className="w-[240px]">
+        <img
+          src={selectedUrl}
+          alt={title}
+          className="w-ful h-auto object-cover rounded-lg shadow-md min-h-96 w-full"
+        />
+      </div>
+
       <div className="grid grid-cols-3 mt-3.5 gap-[9px]">
         {imageUrls
           ?.filter((_, index) => index < 3)

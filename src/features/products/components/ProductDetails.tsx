@@ -19,7 +19,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { productName, discount, productDescription, sizeColorSet, price } =
     product;
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
 
   // Extract unique sizes and colors
   const uniqueSizes = Array.from(
@@ -126,10 +126,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               Quick checkout
             </Button>
             <button
+              disabled={isInCart(product?.id)}
               onClick={handleAddtToCart}
-              className="p-3 border border-black/60 rounded-full hover:bg-gray-100"
+              className={cn(
+                "p-3 border border-black/60 rounded-full hover:bg-gray-100 relative",
+                isInCart(product?.id) && "opacity-50"
+              )}
             >
               <CartIcon className="h-6 w-6" />
+              {isInCart(product?.id) && (
+                <Check className="h-5 w-5 absolute -top-1 -right-1 bg-green-500 text-black rounded-full p-1" />
+              )}
             </button>
           </div>
           <p className="text-sm mt-2">
