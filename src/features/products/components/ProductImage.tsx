@@ -11,8 +11,8 @@ const ProductImage: React.FC<ProductImageProps> = ({ imageUrls, title }) => {
 
   if (imageUrls?.length === 0) return null;
   return (
-    <div className="mb-8 max-w-3xs">
-      <div className="w-[240px]">
+    <div className="mb-8 max-w-3xs mx-auto lg:mx-0">
+      <div className="w-full lg:w-[240px]">
         <img
           src={selectedUrl}
           alt={title}

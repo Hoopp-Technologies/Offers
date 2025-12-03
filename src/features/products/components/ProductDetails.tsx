@@ -103,8 +103,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         </div>
         <div className="">
           {/* Quantity and Checkout */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-between border rounded-md py-1 px-2 w-32">
+          <div className="flex items-center space-x-2 lg:space-x-4">
+            <div className="flex items-center justify-between border rounded-md py-1 px-2 w-24 lg:w-32">
               <Minus
                 className="cursor-pointer"
                 onClick={() => setQuantity((prev) => prev - 1)}

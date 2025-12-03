@@ -30,20 +30,20 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
   const { selectedCurrency } = usePreferences();
 
   return (
-    <div className="flex items-center gap-4.5">
+    <div className="flex items-center gap-2 lg:gap-4.5">
       <Trash2
         className="bg-white p-2 rounded-full cursor-pointer hover:text-red-500 transition-colors"
         size={40}
         onClick={() => removeFromCart(id ?? offerId)}
       />
-      <div className="bg-white rounded-lg overflow-hidden group relative flex p-4.5 items-end flex-1 ">
-        <div className="flex flex-1">
+      <div className="bg-white rounded-lg overflow-hidden group relative flex p-4.5 flex-col lg:flex-row lg:gap-3 items-end flex-1 ">
+        <div className="flex flex-col lg:flex-row gap-2 w-full flex-1">
           <img
             src={imageUrls?.[0] ?? imageUrl?.[0]}
             alt={productName}
-            className="w-40 h-32 object-cover rounded-lg"
+            className="w-full lg:w-40 h-32 object-cover rounded-lg "
           />
-          <div className="p-4 flex flex-col justify-center">
+          <div className="px-0 py-4 lg:p-4 flex flex-col justify-center">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               {productName ?? offerName}
             </h3>
@@ -77,14 +77,14 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-row justify-between w-full lg:w-auto items-center lg:flex-col">
           <p className="text-right text-lg font-bold">
             {getCurrencySymbol(selectedCurrency)}
             {(
               (price?.discountedPrice ?? discountedPrice ?? 0) * quantity
             ).toLocaleString()}
           </p>
-          <div className="flex items-center justify-between py-1 px-2 w-32 mt-2">
+          <div className="flex items-center justify-between py-1 px-2 w-32 mt-0 lg:mt-2">
             <Minus
               className="cursor-pointer hover:text-gray-700"
               onClick={() => updateQuantity(id ?? offerId, quantity - 1)}

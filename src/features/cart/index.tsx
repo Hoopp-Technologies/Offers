@@ -9,7 +9,7 @@ const CartPage: React.FC = () => {
   const { cartItems } = useCart();
 
   return (
-    <main className="container mx-auto px-6 py-8 pt-32">
+    <main className="container mx-auto px-3 lg:px-6 py-8 pt-32">
       <div className="mb-12">
         <h1 className="text-4xl font-semibold mb-3.5">Your cart</h1>
         <p className="text-lg">Your cart is ready for checkout</p>
@@ -33,7 +33,7 @@ const CartPage: React.FC = () => {
       )}
       {cartItems.length > 0 && (
         <div className="py-20 flex items-center justify-center">
-          <Button asChild className="rounded-full text-lg px-36" size={"lg"}>
+          <Button asChild className="rounded-full text-lg lg:px-36" size={"lg"}>
             <Link to={"/"}>Continue Shopping</Link>
           </Button>
         </div>

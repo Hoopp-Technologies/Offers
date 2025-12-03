@@ -58,7 +58,7 @@ const FilterSection: React.FC = () => {
           </Button>
 
           {/* Category Pills */}
-          <div className="flex gap-y-2 flex-wrap justify-center md:justify-start space-x-2 mb-4 md:mb-0">
+          <div className="flex gap-y-2 flex-wrap justify-center md:justify-start space-x-2 my-4 md:my-0">
             {categories?.map((category) => (
               <span
                 key={category}

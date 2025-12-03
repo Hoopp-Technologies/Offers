@@ -63,17 +63,17 @@ const ProductDetailsPage: React.FC = () => {
   return (
     <main className="container mx-auto px-6 py-8 pt-32">
       <Breadcrumbs items={breadcrumbs} />
-      <div className="bg-white border border-[#E5E9EB] rounded-3xl px-12 pb-20">
+      <div className="bg-white border border-[#E5E9EB] rounded-3xl px-6 lg:px-12 pb-20">
         <OfferBanner product={product} />
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-20">
-          <div className="md:col-span-3 flex gap-8">
+          <div className="md:col-span-3 flex gap-8 flex-col-reverse md:flex-row">
             <ProductImage
               imageUrls={product.imageUrls}
               title={product?.productName}
             />
             <ProductDetails product={product} />
           </div>
-          <div className="border-t lg:border-t-0 lg:border-l lg:col-span-2 pl-8 pt-4 lg:pt-0">
+          <div className="border-t lg:border-t-0 lg:border-l lg:col-span-2 lg:pl-8 pt-4 lg:pt-0">
             <div className="flex justify-end items-center gap-[9px] text-(--color-muted) mb-4.5">
               <div
                 className={cn("rounded-full bg-[#F4F6F5] p-2 cursor-pointer", {
