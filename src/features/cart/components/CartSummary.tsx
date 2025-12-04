@@ -12,6 +12,7 @@ import type { PayloadType } from "@/services/mutation";
 import PaystackPop from "@paystack/inline-js";
 import { useGetCart } from "@/services/products/queries";
 import useCheckoutStore from "@/store/checkout";
+import { useUpdateProfile } from "@/services/profile/mutations";
 
 const CartSummary = () => {
   const { cartTotal, cartItems, cartId, setCartId } = useCart();
@@ -38,7 +39,17 @@ const CartSummary = () => {
       };
     },
   });
-  // access code = 6tw1zo4ybbao65f
+
+  const { mutateAsync: _updateProfile, isPending: _isPendingUpdateProfile } =
+    useUpdateProfile({
+      onSuccess: () => {
+        toast.success("Profile updated successfully");
+      },
+      onError: () => {
+        toast.error("Failed to update profile");
+      },
+    });
+
   const pathname = useLocation().pathname;
   const isCheckoutPage = pathname.includes("checkout");
 

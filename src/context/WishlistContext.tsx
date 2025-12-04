@@ -102,7 +102,41 @@ export const WishlistContextProvider: React.FC<{
   });
 
   useEffect(() => {
-    if (wishlist) {
+    if (wishlist && loggedIn) {
+      const localItems = wishlistItems as ProductData[];
+      const serverItems = wishlist;
+
+      // Find items that exist locally but not on server
+      const localOnlyItems = localItems.filter(
+        (localItem) =>
+          !serverItems.some(
+            (serverItem) =>
+              (serverItem.id ?? serverItem.offerId) ===
+              (localItem.id ?? localItem.offerId)
+          )
+      );
+
+      // Sync local-only items to server
+      if (localOnlyItems.length > 0) {
+        localOnlyItems.forEach(async (item) => {
+          try {
+            const token = localStorage.getItem("token");
+            await Axios.post(
+              `ecommerce/customer/wishlist/${item.id}`,
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+          } catch (error) {
+            console.error("Failed to sync wishlist item to server:", error);
+          }
+        });
+      }
+
+      // Update local state with server data
       setWishlistItems(wishlist);
     }
   }, [wishlist, loggedIn]);

@@ -162,7 +162,32 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   useEffect(() => {
-    if (cart) {
+    if (cart && loggedIn) {
+      const localItems = cartItems as CartItem[];
+      const serverItems = cart.cartItems;
+
+      // Find items that exist locally but not on server
+      const localOnlyItems = localItems.filter(
+        (localItem) =>
+          !serverItems.some(
+            (serverItem) =>
+              (serverItem.offerId ?? serverItem.id) ===
+              (localItem.offerId ?? localItem.id)
+          )
+      );
+
+      // Sync local-only items to server
+      if (localOnlyItems.length > 0) {
+        localOnlyItems.forEach((item) => {
+          syncCart({
+            offerId: item.offerId ?? item.id,
+            quantity: item.quantity,
+            currencyCode: selectedCurrency,
+          });
+        });
+      }
+
+      // Update local state with server data
       setCartItems(cart.cartItems);
       setCartId(cart.cartId);
     }
