@@ -39,7 +39,7 @@ const Login = () => {
         toast.success("Logged in");
         setIsLoading(false);
         setLoggedIn(true);
-        setShowAuth(false)
+        setShowAuth(false);
       } else {
         const error = await response.text();
         toast.error(error);

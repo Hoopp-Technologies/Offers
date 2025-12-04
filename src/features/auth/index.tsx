@@ -5,6 +5,7 @@ import { useState } from "react";
 import OTP from "./partials/otp";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useAuth } from "@/context";
+import ForgotPassword from "./partials/forgot-password";
 
 const Auth = () => {
   const [step, setStep] = useState(1);
@@ -41,6 +42,12 @@ const Auth = () => {
                 </TabsList>
                 <TabsContent value="login">
                   <Login />
+                  <button
+                    onClick={() => setStep(3)}
+                    className="text-[#494747] mt-2 text-sm hover:underline"
+                  >
+                    Did you forget your password?
+                  </button>
                 </TabsContent>
                 <TabsContent value="register">
                   <Signup
@@ -62,6 +69,14 @@ const Auth = () => {
                 setTabValue("login");
                 setStep(1);
               }}
+            />
+          )}
+          {step === 3 && (
+            <ForgotPassword
+              onReturn={() => {
+                setStep(1);
+              }}
+              onSuccess={() => setStep(1)}
             />
           )}
         </div>

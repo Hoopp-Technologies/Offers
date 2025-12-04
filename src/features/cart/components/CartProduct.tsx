@@ -37,7 +37,7 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
         onClick={() => removeFromCart(id ?? offerId)}
       />
       <div className="bg-white rounded-lg overflow-hidden group relative flex p-4.5 flex-col lg:flex-row lg:gap-3 items-end flex-1 ">
-        <div className="flex flex-col lg:flex-row gap-2 w-full flex-1">
+        <div className="flex flex-col md:flex-row gap-2 w-full flex-1">
           <img
             src={imageUrls?.[0] ?? imageUrl?.[0]}
             alt={productName}

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { CartIcon } from "../../../components/icons";
+import { CartIcon, HeartIcon } from "../../../components/icons";
 import { Check, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart, usePreferences } from "@/context";
+import { useCart, usePreferences, useWishlist } from "@/context";
 import type { ProductData } from "@/services/products/types";
 import { getCurrencySymbol } from "@/utils/textUtils";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 
 interface ProductDetailsProps {
   product: ProductData;
@@ -14,12 +13,12 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { selectedCurrency } = usePreferences();
-  const navigate = useNavigate();
 
   const { productName, discount, productDescription, sizeColorSet, price } =
     product;
   const [quantity, setQuantity] = useState(1);
   const { addToCart, isInCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   // Extract unique sizes and colors
   const uniqueSizes = Array.from(
@@ -37,8 +36,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     addToCart(product, quantity);
   };
 
+  const isWishlisted = isInWishlist(product.id ?? "");
+  const isCarted = isInCart(product.id ?? "");
+
+  const handleWishlistClick = () => {
+    if (isWishlisted) {
+      removeFromWishlist(product.id ?? "");
+    } else {
+      addToWishlist(product);
+    }
+  };
+
   return (
-    <div>
+    <div className="w-full">
       <div className="flex flex-col justify-between h-full">
         <div className="">
           <h1 className="text-4xl font-bold mb-4.5">{productName}</h1>
@@ -104,40 +114,41 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <div className="">
           {/* Quantity and Checkout */}
           <div className="flex items-center space-x-2 lg:space-x-4">
-            <div className="flex items-center justify-between border rounded-md py-1 px-2 w-24 lg:w-32">
-              <Minus
+            <div className="flex items-center justify-between border border-[#F15822] rounded-md py-1 px-4 w-20 lg:w-32">
+              <button
                 className="cursor-pointer"
                 onClick={() => setQuantity((prev) => prev - 1)}
-              />
+                disabled={quantity === 1 || isCarted}
+              >
+                <Minus className="cursor-pointer" size={18} color="#494747" />
+              </button>
               <span className="px-4 py-2">{quantity}</span>
-              <Plus
-                className="cursor-pointer"
+              <button
                 onClick={() => setQuantity((prev) => prev + 1)}
-              />
+                disabled={isCarted}
+              >
+                <Plus className="cursor-pointer" size={18} color="#494747" />
+              </button>
             </div>
             <Button
               onClick={() => {
                 handleAddtToCart();
-                navigate("/cart");
               }}
+              disabled={isCarted}
               size={"lg"}
               className=" text-white px-6 py-6 text-lg rounded-md hover:bg-orange-600 grow"
             >
-              Quick checkout
+              {isCarted ? "Item is in cart" : "Add to cart"}
+              <CartIcon className="h-9 w-9 scale-125 ml-2" />
             </Button>
-            <button
-              disabled={isInCart(product?.id)}
-              onClick={handleAddtToCart}
-              className={cn(
-                "p-3 border border-black/60 rounded-full hover:bg-gray-100 relative",
-                isInCart(product?.id) && "opacity-50"
-              )}
+            <div
+              className={cn("rounded-full bg-[#F4F6F5] p-2 cursor-pointer", {
+                "text-red-600": isWishlisted,
+              })}
+              onClick={handleWishlistClick}
             >
-              <CartIcon className="h-6 w-6" />
-              {isInCart(product?.id) && (
-                <Check className="h-5 w-5 absolute -top-1 -right-1 bg-green-500 text-black rounded-full p-1" />
-              )}
-            </button>
+              <HeartIcon className="h-6" />
+            </div>
           </div>
           <p className="text-sm mt-2">
             The discount offer of {discount}% has been automatically applied to

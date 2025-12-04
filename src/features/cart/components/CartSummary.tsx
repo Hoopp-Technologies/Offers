@@ -11,6 +11,7 @@ import type { PayloadType } from "@/services/mutation";
 //@ts-ignore
 import PaystackPop from "@paystack/inline-js";
 import { useGetCart } from "@/services/products/queries";
+import useCheckoutStore from "@/store/checkout";
 
 const CartSummary = () => {
   const { cartTotal, cartItems, cartId, setCartId } = useCart();
@@ -19,6 +20,7 @@ const CartSummary = () => {
   const { data: cart, refetch: refetchCart } = useGetCart({
     enabled: false,
   });
+  const { isValid, profileData } = useCheckoutStore((state) => state);
 
   const { mutate: checkout, isPending } = useCheckout({
     onSuccess(data) {
@@ -38,6 +40,7 @@ const CartSummary = () => {
   });
   // access code = 6tw1zo4ybbao65f
   const pathname = useLocation().pathname;
+  const isCheckoutPage = pathname.includes("checkout");
 
   const { selectedCurrency } = usePreferences();
   const savedDiscount = cartItems?.reduce(
@@ -48,9 +51,10 @@ const CartSummary = () => {
         item?.quantity,
     0
   );
+  console.log({ profileData, isValid });
 
   const handleCheckout = () => {
-    if (!pathname.includes("checkout")) return;
+    if (!isCheckoutPage) return;
     const checkoutObject = transformCart(cartItems, cartId);
     checkout(checkoutObject as unknown as PayloadType);
   };
@@ -138,7 +142,7 @@ const CartSummary = () => {
             <Button
               onClick={handleCheckout}
               loading={isPending}
-              disabled={isPending}
+              disabled={isPending || (isCheckoutPage && isValid)}
               className="rounded-full text-lg py-6 w-full"
               size={"lg"}
             >

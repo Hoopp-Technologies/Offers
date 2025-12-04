@@ -15,6 +15,7 @@ import ProfilePage from "./features/profile";
 import PurchaseHistory from "./features/purchase/partials/purchase-history";
 import { Products } from "./features/home/category";
 import PurchaseSuccess from "./features/purchase/partials/purchase-success";
+import ResetPassword from "./features/auth/partials/reset-password";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/purchase-history" element={<PurchaseHistory />} />
           <Route path="/purchase-success" element={<PurchaseSuccess />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Add other routes here as we build more pages */}
         </Routes>

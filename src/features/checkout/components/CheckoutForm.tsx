@@ -11,6 +11,7 @@ import { useGetProfile } from "@/services/profile/queries";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useMemo } from "react";
 import { State } from "country-state-city";
+import useCheckoutStore from "@/store/checkout";
 
 // Define 5 constant countries
 export const COUNTRIES = [
@@ -34,6 +35,7 @@ interface CheckoutFormData {
 
 const CheckoutForm = () => {
   const { data: profileData, isLoading, isRefetching } = useGetProfile();
+  const { setProfileData, setIsValid } = useCheckoutStore((state) => state);
 
   const {
     register,
@@ -86,7 +88,23 @@ const CheckoutForm = () => {
       }
     }
   }, [profileData, setValue, isLoading, isRefetching]);
-  console.log({ isValid });
+
+  useEffect(() => {
+    setIsValid(isValid);
+    if (isValid) {
+      setProfileData({
+        fullName: watch("fullName"),
+        email: watch("email"),
+        phoneNumber: watch("phoneNumber"),
+        gender: watch("gender"),
+        deliveryAddress: watch("deliveryAddress"),
+        country: watch("country"),
+        state: watch("state"),
+        zipCode: watch("zipCode"),
+      });
+    }
+  }, [watch]);
+
   // Reset state when country changes
   useEffect(() => {
     setValue("state", "");

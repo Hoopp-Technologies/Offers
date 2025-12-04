@@ -7,19 +7,15 @@ import OfferDetail from "../components/OfferDetail";
 import MoreOffers from "../components/MoreOffers";
 import ProductDetailsSkeleton from "../components/ProductDetailsSkeleton";
 import { Flag, Share2 } from "lucide-react";
-import { HeartIcon } from "@/components/icons";
 import { useGetOfferDetails } from "@/services/products/queries";
-import { usePreferences, useWishlist } from "@/context";
+import { usePreferences } from "@/context";
 import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
-import { cn } from "@/lib/utils";
 
 const ProductDetailsPage: React.FC = () => {
   const { productId } = useParams();
   const { selectedCurrency } = usePreferences();
-
-  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   const {
     data: productDetails,
@@ -45,15 +41,6 @@ const ProductDetailsPage: React.FC = () => {
     },
     { label: product.productName, href: `#` },
   ];
-  const isWishlisted = isInWishlist(product.id ?? "");
-
-  const handleWishlistClick = () => {
-    if (isWishlisted) {
-      removeFromWishlist(product.id ?? "");
-    } else {
-      addToWishlist(product);
-    }
-  };
 
   // Show skeleton while loading or refetching
   if (isLoading || isRefetching) {
@@ -75,14 +62,6 @@ const ProductDetailsPage: React.FC = () => {
           </div>
           <div className="border-t lg:border-t-0 lg:border-l lg:col-span-2 lg:pl-8 pt-4 lg:pt-0">
             <div className="flex justify-end items-center gap-[9px] text-(--color-muted) mb-4.5">
-              <div
-                className={cn("rounded-full bg-[#F4F6F5] p-2 cursor-pointer", {
-                  "text-red-600": isWishlisted,
-                })}
-                onClick={handleWishlistClick}
-              >
-                <HeartIcon className="h-6" />
-              </div>
               <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
                 <Share2 className="h-6" />
               </div>
