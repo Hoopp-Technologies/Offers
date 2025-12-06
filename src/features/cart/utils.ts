@@ -16,7 +16,7 @@ export function transformCart(
   cartId: number
 ): TransformedCart {
   const cartItems = items.map((item) => ({
-    claimedOfferPrice: item.price.discountedPrice * item.quantity,
+    claimedOfferPrice: item.discountedPrice * item.quantity,
     offerId: item.offerId,
     quantity: item.quantity,
     currencyCode: "NGN",

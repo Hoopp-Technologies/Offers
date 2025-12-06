@@ -21,9 +21,12 @@ const PurchaseSuccess = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 pb-32 py-48 flex items-center justify-center">
+    <div className="container mx-auto px-6 pb-32 py-48 flex gap-3 gap-y-6 items-center justify-center flex-wrap">
       {data?.map((item) => (
-        <div className="rounded-[10px] pt-9 py-5 bg-white border border-[#F4F6F5] w-lg">
+        <div
+          key={item.offerId}
+          className="rounded-[10px] pt-9 py-5 bg-white border border-[#F4F6F5] w-md"
+        >
           <div className="px-6">
             <h2 className="text-center text-3xl font-bold mb-14">
               Purchase Successful
@@ -35,7 +38,7 @@ const PurchaseSuccess = () => {
                 className="w-1/3 rounded-[10px] h-24"
               />
               <div className="flex-1">
-                <h3 className="text-[22px] font-semibold mb-2 leading-8">
+                <h3 className="text-[22px] font-semibold mb-2 leading-7">
                   {item.offerName}
                 </h3>
                 <div className="flex items-center gap-4">
