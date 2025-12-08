@@ -31,5 +31,5 @@ export const useDeleteFromCartFn = (id: string) =>
 export const useCheckout = createMutation<CheckoutRes>({
   method: "POST",
   url: `ecommerce/checkout`,
-  keysToRefetch: [["cart"], ["wishlist"]],
+  keysToRefetch: [["wishlist"]],
 });

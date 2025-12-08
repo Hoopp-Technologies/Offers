@@ -32,7 +32,6 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     productName,
     price,
     offerEndDate,
-    discountValue,
     quantityBought,
     productType,
     category,
@@ -95,7 +94,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       return (
         <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center z-10">
           <FireIcon className="h-4 w-4 mr-1" />
-          {discountValue}%
+          {price?.percentageSaved}%
         </div>
       );
     }
@@ -191,7 +190,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               {Number(price?.originalPrice).toLocaleString()}
             </span>
             <span className="bg-[#73BF451A] rounded-full px-3 py-0.5 text-xs whitespace-nowrap">
-              Save {discountValue ?? price?.discountValue}%
+              Save {price?.percentageSaved ?? price?.discountValue ?? 0}%
             </span>
           </div>
 

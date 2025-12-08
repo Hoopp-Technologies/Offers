@@ -43,6 +43,7 @@ export type Price = {
   discountedPrice: number;
   discountType: DiscountType;
   discountValue: number;
+  percentageSaved: number;
 };
 
 export type HomeOfferData = {

@@ -90,6 +90,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     setCartItems(newItems);
+    console.log({ newItems });
     toast.success("Product added to cart");
     if (loggedIn) {
       syncCart({

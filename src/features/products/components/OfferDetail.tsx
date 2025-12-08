@@ -12,8 +12,13 @@ const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
         <ul className="space-y-3 text-gray-700">
           <li className="flex items-start">
             <span>
-              Enjoy <strong>{data.discount}% discount</strong> on your purchase
-              when you spend a minimum of ₦5,000 on selected items.
+              Enjoy{" "}
+              <strong>
+                {data.price?.percentageSaved ?? data.price.discountValue}%
+                discount
+              </strong>{" "}
+              on your purchase when you spend a minimum of ₦5,000 on selected
+              items.
             </span>
           </li>
           <li className="flex items-center gap-1.5">
@@ -27,7 +32,10 @@ const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
           </li>
           <li className="flex items-center gap-1.5">
             <Percent color="#808080" />
-            <span>Enjoy {data.discount}% off on this discount offer.</span>
+            <span>
+              Enjoy {data?.price?.percentageSaved ?? data.price.discountValue}%
+              off on this discount offer.
+            </span>
           </li>
         </ul>
         <div className="mt-6 border-t pt-4 flex items-center gap-3">
