@@ -3,12 +3,13 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import type { PurchaseHistoryItem } from "@/services/profile/types";
+import { capitalizeText } from "@/utils/textUtils";
 
 const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
-  const [status] = useState("USED");
+  const [status] = useState(item.status);
   const getColorScheme = (status: string) => {
     switch (status) {
-      case "USED":
+      case "PENDING":
         return { textColor: "#494747", backgroundColor: "#E5E9EB" };
       case "EXPIRED":
         return { textColor: "#FFFFFF", backgroundColor: "#FF0800" };
@@ -28,7 +29,7 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
           color: getColorScheme(status).textColor,
         }}
       >
-        Unused
+        {capitalizeText(status)}
       </p>
       <div className="flex mb-6 items-center gap-2.5">
         <img
@@ -37,10 +38,10 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
           className="w-2/5 rounded-[10px] h-24 border"
         />
         <div className="">
-          <h3 className="text-[22px] font-semibold mb-2 leading-8">
+          <h3 className="text-[22px] font-semibold mb-2 leading-7">
             {item.offerName}
           </h3>
-          <p className="text-xs">Sold by Mecury Cakes</p>
+          <p className="text-xs">Sold by {capitalizeText(item.soldBy)}</p>
         </div>
       </div>
       <div

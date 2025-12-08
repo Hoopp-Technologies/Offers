@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/context";
 import { useGetTransaction } from "@/services/profile/queries";
-import { getCurrencySymbol } from "@/utils/textUtils";
+import { capitalizeText, getCurrencySymbol } from "@/utils/textUtils";
 import { format } from "date-fns";
 import { Copy, MailOpen, Phone } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -42,7 +42,9 @@ const PurchaseSuccess = () => {
                   {item.offerName}
                 </h3>
                 <div className="flex items-center gap-4">
-                  <p className="text-xs">Sold by Mecury Cakes</p>
+                  <p className="text-xs">
+                    Sold by {capitalizeText(item.brandName)}
+                  </p>
                   <div className="flex items-center gap-2">
                     <Phone size={9} className="cursor-pointer" />
                     <MailOpen size={9} className="cursor-pointer" />

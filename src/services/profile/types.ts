@@ -37,6 +37,9 @@ export type PurchaseHistoryItem = {
   };
   discountType: string;
   discountValue: number;
+  soldBy: string;
+  voucherCode: string;
+  status: string;
   quantityBought: number;
   category: string;
   imageUrls: string[];
@@ -60,5 +63,6 @@ export type TransactionData = {
   voucherCode: string;
   quantityBought: number;
   category: string;
+  brandName: string;
   imageUrls: string[];
 };

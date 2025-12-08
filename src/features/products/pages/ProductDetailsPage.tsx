@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Breadcrumbs from "../components/Breadcrumbs";
 import OfferBanner from "../components/OfferBanner";
 import ProductImage from "../components/ProductImage";
@@ -12,10 +12,12 @@ import { usePreferences } from "@/context";
 import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
+import ReportOffer from "../components/ReportOffer";
 
 const ProductDetailsPage: React.FC = () => {
   const { productId } = useParams();
   const { selectedCurrency } = usePreferences();
+  const [openReportOffer, setOpenReportOffer] = useState(false);
 
   const {
     data: productDetails,
@@ -65,7 +67,10 @@ const ProductDetailsPage: React.FC = () => {
               <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
                 <Share2 className="h-6" />
               </div>
-              <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
+              <div
+                className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer"
+                onClick={() => setOpenReportOffer(true)}
+              >
                 <Flag className="h-6" />
               </div>
             </div>
@@ -74,6 +79,7 @@ const ProductDetailsPage: React.FC = () => {
         </div>
       </div>
       <MoreOffers />
+      <ReportOffer open={openReportOffer} onOpenChange={setOpenReportOffer} />
     </main>
   );
 };
