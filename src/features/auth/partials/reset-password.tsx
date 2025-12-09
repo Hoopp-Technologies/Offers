@@ -8,19 +8,25 @@ import { BASE_URL } from "@/services";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { validatePassword } from "@/lib/miniFns";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
   const [seePass, setSeePass] = useState(false);
   const [seePass2, setSeePass2] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { setLoggedIn, setShowAuth } = useAuth();
+  const { setShowAuth } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<{ password1: string; password2: string }>();
+  } = useForm<{ password1: string; password2: string; token: string }>();
 
-  const onSubmit = async (data: { password1: string; password2: string }) => {
+  const onSubmit = async (data: {
+    password1: string;
+    password2: string;
+    token: string;
+  }) => {
     if (!validatePassword(data.password1)) return;
     if (data.password1 !== data.password2) {
       toast.error("Passwords don't match");
@@ -35,18 +41,15 @@ const ResetPassword = () => {
         },
         body: JSON.stringify({
           newPassword: data.password1,
-          confirmPassword: data.password2,
+          token: data.token,
         }),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        // setAuthToken(result.token);
-        localStorage.setItem("token", result.token);
-        toast.success("Logged in");
+      if (response.status === 200) {
+        toast.success("Password successfully reset. You can now log in.");
         setIsLoading(false);
-        setLoggedIn(true);
-        setShowAuth(false);
+        setShowAuth(true);
+        navigate("/");
       } else {
         const error = await response.text();
         toast.error(error);
@@ -91,7 +94,9 @@ const ResetPassword = () => {
                   <Eye className=" text-[#7F7F7F] cursor-pointer" size={18} />
                 )
               }
-              {...register("password1", { required: true })}
+              {...register("password1", {
+                required: true,
+              })}
             />
           </div>
 
@@ -115,7 +120,19 @@ const ResetPassword = () => {
               {...register("password2", { required: true })}
             />
           </div>
-
+          <div className="relative">
+            <Input
+              id="token"
+              type="text"
+              placeholder="Enter OTP token"
+              className=""
+              {...register("token", {
+                required: true,
+                minLength: 6,
+                maxLength: 6,
+              })}
+            />
+          </div>
           <Button loading={isLoading} disabled={!isValid} type="submit">
             Update password
           </Button>

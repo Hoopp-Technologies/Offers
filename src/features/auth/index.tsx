@@ -76,7 +76,10 @@ const Auth = () => {
               onReturn={() => {
                 setStep(1);
               }}
-              onSuccess={() => setStep(1)}
+              onSuccess={() => {
+                setTabValue("login");
+                setShowAuth(false);
+              }}
             />
           )}
         </div>

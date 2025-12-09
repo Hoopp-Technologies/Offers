@@ -5,6 +5,7 @@ import { BASE_URL } from "@/services";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = ({
   onSuccess,
@@ -14,6 +15,7 @@ const ForgotPassword = ({
   onReturn: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -37,10 +39,10 @@ const ForgotPassword = ({
         }
       );
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
+      if (response.status === 200) {
         onSuccess();
+        toast.success("Password reset code sent to email.");
+        navigate("/reset-password");
       } else {
         const error = await response.text();
         toast.error(error);
