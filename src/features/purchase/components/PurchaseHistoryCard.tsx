@@ -2,8 +2,10 @@ import { CalendarDays, Copy, Eye, MailOpen, Phone } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import copy from "copy-to-clipboard";
 import type { PurchaseHistoryItem } from "@/services/profile/types";
 import { capitalizeText } from "@/utils/textUtils";
+import { differenceInCalendarDays, formatDistance } from "date-fns";
 
 const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
   const [status] = useState(item.status);
@@ -13,7 +15,7 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
         return { textColor: "#494747", backgroundColor: "#E5E9EB" };
       case "EXPIRED":
         return { textColor: "#FFFFFF", backgroundColor: "#FF0800" };
-      case "REDEEMED":
+      case "CLAIMED":
         return { textColor: "#FFFFFF", backgroundColor: "#73BF45" };
       default:
         return { textColor: "#494747", backgroundColor: "#E5E9EB" };
@@ -47,13 +49,13 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
       <div
         className="h-24 flex flex-col items-center justify-center rounded-[10px]"
         style={{
-          backgroundColor: status === "REDEEMED" ? "#E9F8E0" : "#FAFAFA",
+          backgroundColor: status === "CLAIMED" ? "#E9F8E0" : "#FAFAFA",
         }}
       >
         <p className="text-xs">Your voucher code</p>
         <p
           className={cn("text-3xl font-bold flex gap-3 items-center", {
-            "text-[#73BF45]": status === "REDEEMED",
+            "text-[#73BF45]": status === "CLAIMED",
             "text-[#FF0800]": status === "EXPIRED" || status === "USED",
           })}
         >
@@ -62,6 +64,7 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
             color="#000000"
             className="cursor-pointer"
             onClick={() => {
+              copy("RC9900299382");
               toast.success("Copied to clipboard");
             }}
           />
@@ -70,7 +73,11 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
       <div className="flex items-center justify-between gap-3 mt-4">
         <p className="flex items-center gap-1.5 text-sm">
           <CalendarDays size={18} />
-          Expires in 15 days
+          {differenceInCalendarDays(item.offerEndDate, new Date()) < 0
+            ? "Expired"
+            : `Expires ${formatDistance(item.offerEndDate, new Date(), {
+                addSuffix: true,
+              })}`}
         </p>
         <p className="flex items-center gap-1.5 text-sm">
           <Eye size={18} className="cursor-pointer" />

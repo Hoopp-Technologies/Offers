@@ -13,11 +13,13 @@ import { useParams } from "react-router-dom";
 import type { ProductData } from "@/services/products/types";
 import { capitalizeText } from "@/utils/textUtils";
 import ReportOffer from "../components/ReportOffer";
+import SocialSharePopup from "../components/SocialShare/SocialSharePopup";
 
 const ProductDetailsPage: React.FC = () => {
   const { productId } = useParams();
   const { selectedCurrency } = usePreferences();
   const [openReportOffer, setOpenReportOffer] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const {
     data: productDetails,
@@ -44,6 +46,14 @@ const ProductDetailsPage: React.FC = () => {
     { label: product.productName, href: `#` },
   ];
 
+  const handleShareClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   // Show skeleton while loading or refetching
   if (isLoading || isRefetching) {
     return <ProductDetailsSkeleton />;
@@ -65,7 +75,7 @@ const ProductDetailsPage: React.FC = () => {
           <div className="border-t lg:border-t-0 lg:border-l lg:col-span-2 lg:pl-8 pt-4 lg:pt-0">
             <div className="flex justify-end items-center gap-[9px] text-(--color-muted) mb-4.5">
               <div className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer">
-                <Share2 className="h-6" />
+                <Share2 className="h-6" onClick={handleShareClick} />
               </div>
               <div
                 className="rounded-full bg-[#F4F6F5] p-2 cursor-pointer"
@@ -80,6 +90,13 @@ const ProductDetailsPage: React.FC = () => {
       </div>
       <MoreOffers />
       <ReportOffer open={openReportOffer} onOpenChange={setOpenReportOffer} />
+      <SocialSharePopup
+        url={"url"}
+        title={product.productName}
+        description={product.productDescription}
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+      />
     </main>
   );
 };

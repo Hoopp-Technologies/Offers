@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { Copy, MailOpen, Phone } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import copy from "copy-to-clipboard";
 
 import PurchaseSuccessSkeleton from "../components/PurchaseSuccessSkeleton";
 
@@ -90,6 +91,7 @@ const PurchaseSuccess = () => {
                   color="#000000"
                   className="cursor-pointer"
                   onClick={() => {
+                    copy(item.voucherCode);
                     toast.success("Copied to clipboard");
                   }}
                 />
