@@ -1,3 +1,4 @@
+import { EmptyState } from "@/components/ui/empty-state";
 import HomeProductsSkeleton from "./HomeProductsSkeleton";
 import ProductCard from "./ProductCard";
 import type { HomeOfferData } from "@/services/products/types";
@@ -26,6 +27,7 @@ const ProductGrid = ({
             ))}
           </div>
         )}
+        {!isLoading && data?.length === 0 && <EmptyState />}
       </div>
     </section>
   );

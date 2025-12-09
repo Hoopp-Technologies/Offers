@@ -13,6 +13,7 @@ const Footer: React.FC = () => {
     setIsApplied(true);
     navigate("/products");
   };
+  console.log(handleExpiringSoonClick);
   return (
     <footer className="bg-white text-black py-12">
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -61,7 +62,7 @@ const Footer: React.FC = () => {
           <ul>
             <li className="mb-4">
               <Link
-                to="/marketplace"
+                to="/products"
                 className="hover:underline hover:text-(--color-primary)"
               >
                 Browse marketplace
@@ -69,7 +70,7 @@ const Footer: React.FC = () => {
             </li>
             <li className="mb-4">
               <Link
-                to="/categories"
+                to="/products?explore=TOP_BRAND"
                 className="hover:underline hover:text-(--color-primary)"
               >
                 Top brands
@@ -77,7 +78,7 @@ const Footer: React.FC = () => {
             </li>
             <li className="mb-4">
               <Link
-                to="/deals"
+                to="/products?explore=LATEST"
                 className="hover:underline hover:text-(--color-primary)"
               >
                 Latest Offers
@@ -85,8 +86,8 @@ const Footer: React.FC = () => {
             </li>
             <li className="mb-4">
               <Link
-                to="/products"
-                onClick={handleExpiringSoonClick}
+                to="/products?explore=EXPIRING_SOON"
+                // onClick={handleExpiringSoonClick}
                 className="hover:underline hover:text-(--color-primary)"
               >
                 Expiring soon

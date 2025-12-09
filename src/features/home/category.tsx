@@ -2,14 +2,23 @@ import HeroSection from "../products/components/HeroSection";
 import FilterSection from "../products/components/FilterSection";
 import ProductGrid from "../products/components/ProductGrid";
 import LoadMoreButton from "../products/components/LoadMoreButton";
-import { useProductsFilter } from "@/services/products/queries";
+import {
+  useProductsExplore,
+  useProductsFilter,
+} from "@/services/products/queries";
 import { usePreferences } from "@/context";
 import useFilterStore from "@/store/filter";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getDaysRemaining } from "./components/utils";
+import { useSearchParams } from "react-router-dom";
 
 export const Products = () => {
   const { selectedCurrency, selectedCountry } = usePreferences();
+  const [searchParams] = useSearchParams();
+  const exploreOption = searchParams.get("explore");
+  const [dataToShow, setDataToShow] = useState(
+    exploreOption ? "explore" : "filter"
+  );
 
   const {
     minPrice,
@@ -21,14 +30,6 @@ export const Products = () => {
     isApplied,
     setIsApplied,
   } = useFilterStore((state) => state);
-
-  // const { data, isLoading } = useGetAllOffers({
-  //   queryParams: {
-  //     currencyCode: selectedCurrency,
-  //     country: selectedCountry,
-  //   },
-  //   enabled: !!selectedCurrency && !!selectedCountry,
-  // });
 
   const {
     data: filterData,
@@ -50,12 +51,36 @@ export const Products = () => {
     enabled: !!selectedCurrency && !!selectedCountry,
   });
 
+  const {
+    data: exploreData,
+    isLoading: exploreLoading,
+    isRefetching: exploreRefetching,
+    refetch: refetchExplore,
+  } = useProductsExplore({
+    queryParams: {
+      currencyCode: selectedCurrency,
+      country: selectedCountry,
+      pageNumber: 0,
+      exploreOption: exploreOption ?? "",
+    },
+    enabled: !!selectedCurrency && !!selectedCountry && !!exploreOption,
+  });
+
   // Trigger refetch when filters are applied
   useEffect(() => {
     if (isApplied) {
+      setDataToShow("filter");
       refetch();
     }
   }, [isApplied, refetch]);
+
+  // Trigger refetch when exploreOption changes
+  useEffect(() => {
+    if (exploreOption) {
+      setDataToShow("explore");
+      refetchExplore();
+    }
+  }, [exploreOption, refetchExplore]);
 
   // Reset isApplied after refetch completes
   useEffect(() => {
@@ -71,8 +96,13 @@ export const Products = () => {
         <FilterSection />
       </div>
       <ProductGrid
-        data={filterData}
-        isLoading={filterLoading || filterRefetching}
+        data={dataToShow === "filter" ? filterData : exploreData?.content}
+        isLoading={
+          filterLoading ||
+          filterRefetching ||
+          exploreLoading ||
+          exploreRefetching
+        }
       />
       <LoadMoreButton />
     </div>

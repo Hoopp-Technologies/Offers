@@ -31,3 +31,8 @@ export const useProductsFilter = createQuery<any>({
   key: ["market-place/search-filter"],
   url: "market-place/search-filter",
 });
+
+export const useProductsExplore = createQuery<any>({
+  key: ["market-place/explore"],
+  url: "market-place/explore",
+});
