@@ -31,7 +31,7 @@ const OffersSection = ({
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-3">
       <div className="mb-10">
         <div className="flex justify-between items-center mb-4">
           <div className="mb-5">
@@ -46,14 +46,14 @@ const OffersSection = ({
               className="p-2 rounded-[4px] hover:bg-gray-400 transition-colors bg-[#E5E9EB] "
               aria-label="Scroll left"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
             <button
               onClick={() => scroll(topOffersRef, "right")}
               className="p-2 rounded-[4px] hover:bg-gray-400 transition-colors bg-[#E5E9EB]"
               aria-label="Scroll right"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
           </div>
         </div>
@@ -93,14 +93,14 @@ const OffersSection = ({
               className="p-2 rounded-[4px] hover:bg-gray-400 transition-colors bg-[#E5E9EB] "
               aria-label="Scroll left"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
             <button
               onClick={() => scroll(bottomOffersRef, "right")}
               className="p-2 rounded-[4px] hover:bg-gray-400 transition-colors bg-[#E5E9EB] "
               aria-label="Scroll right"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 lg:w-6 h-5 lg:h-6" />
             </button>
           </div>
         </div>

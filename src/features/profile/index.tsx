@@ -20,27 +20,29 @@ const ProfilePage = () => {
         <div className="flex gap-8 mb-11">
           <div
             className={cn(
-              "flex flex-col gap-2 max-w-2xs border border-[#E5E9EB] rounded-xl p-6 cursor-pointer",
+              "flex flex-col gap-2 max-w-2xs border border-[#E5E9EB] rounded-xl p-4 lg:p-6 cursor-pointer",
               activeTab === "personal-info" && "border-[#F15822] bg-[#FAF2EF]"
             )}
             onClick={() => setActiveTab("personal-info")}
           >
-            <img src={note} alt="" className="mb-0.5 h-12 w-12" />
-            <h2 className="text-xl font-semibold">Personal Info</h2>
-            <p className="text-[#717171]">
+            <img src={note} alt="" className="mb-0.5 h-7 lg:h-12 w-7 lg:w-12" />
+            <h2 className="text-lg lg:text-xl font-semibold">Personal Info</h2>
+            <p className="text-[#717171] text-sm lg:text-base">
               Provide personal details and how we can reach you
             </p>
           </div>
           <div
             className={cn(
-              "flex flex-col gap-2 max-w-2xs border border-[#E5E9EB] rounded-xl p-6 cursor-pointer",
+              "flex flex-col gap-2 max-w-2xs border border-[#E5E9EB] rounded-xl p-4 lg:p-6 cursor-pointer",
               activeTab === "login-security" && "border-[#F15822] bg-[#FAF2EF]"
             )}
             onClick={() => setActiveTab("login-security")}
           >
-            <img src={lock} alt="" className="mb-0.5 h-12 w-12" />
-            <h2 className="text-xl font-semibold">Login & Security</h2>
-            <p className="text-[#717171]">
+            <img src={lock} alt="" className="mb-0.5 h-7 lg:h-12 w-7 lg:w-12" />
+            <h2 className="text-lg lg:text-xl font-semibold">
+              Login & Security
+            </h2>
+            <p className="text-[#717171] text-sm lg:text-base">
               Update your password and secure your account
             </p>
           </div>

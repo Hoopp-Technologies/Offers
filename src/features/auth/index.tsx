@@ -17,24 +17,24 @@ const Auth = () => {
       <DialogContent className="sm:max-w-lg" aria-describedby="Auth Modal">
         <div>
           {step === 1 && (
-            <section className="container mx-auto px-6 py-20 min-h-[40vh]">
+            <section className="container mx-auto px-3 lg:px-6 py-20 min-h-[40vh] w-fit">
               <h1 className="text-center font-medium text-2xl">
                 Login / Register to Proceed
               </h1>
               <Tabs
                 defaultValue={tabValue}
                 onValueChange={setTabValue}
-                className="w-[400px] mx-auto mt-7"
+                className="lg:w-[400px] mx-auto mt-7"
               >
                 <TabsList>
                   <TabsTrigger
-                    className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10"
+                    className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-4 lg:px-10"
                     value="login"
                   >
                     Login to RewardClan
                   </TabsTrigger>
                   <TabsTrigger
-                    className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10"
+                    className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-4 lg:px-10"
                     value="register"
                   >
                     Register Account

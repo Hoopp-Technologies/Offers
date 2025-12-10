@@ -26,7 +26,7 @@ const PurchaseHistory = () => {
 
   return (
     <main className="container mx-auto px-6 py-8 pt-32">
-      <div className="flex items-center justify-between mb-20">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-2 items-center justify-between mb-20">
         <div className="">
           <h1 className="text-4xl font-semibold mb-3.5">Purchase history</h1>
           <p className="text-lg">Manage your purchases and vouchers codes</p>
@@ -34,23 +34,23 @@ const PurchaseHistory = () => {
         <Tabs
           defaultValue={tabValue}
           onValueChange={handleTabChange}
-          className=" "
+          className=""
         >
-          <TabsList className="bg-white rounded-full">
+          <TabsList className="bg-white rounded-full mx-3">
             <TabsTrigger
-              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10 rounded-full"
+              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-6 lg:px-10 rounded-full"
               value="ALL"
             >
               All vouchers
             </TabsTrigger>
             <TabsTrigger
-              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10 rounded-full"
+              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-6 lg:px-10 rounded-full"
               value="CLAIMED"
             >
               Redeemed
             </TabsTrigger>
             <TabsTrigger
-              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-10 rounded-full"
+              className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-6 lg:px-10 rounded-full"
               value="PENDING"
             >
               Pending

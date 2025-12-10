@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="bg-[#D9D9D9] py-40">
+    <section className="bg-[#D9D9D9] py-20 lg:py-40">
       <div className="container mx-auto px-6 flex flex-col items-center justify-center">
         {/* Left Content */}
         <div className="text-center md:text-left mb-8 md:mb-0">

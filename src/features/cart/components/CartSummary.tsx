@@ -15,17 +15,17 @@ import useCheckoutStore from "@/store/checkout";
 import { useUpdateProfile } from "@/services/profile/mutations";
 
 const CartSummary = () => {
-  const { cartTotal, cartItems, cartId, setCartId } = useCart();
+  const { cartTotal, cartItems, cartId, setCartId, clearCart } = useCart();
   const { loggedIn, setShowAuth } = useAuth();
   const navigate = useNavigate();
-  const { data: cart, refetch: refetchCart } = useGetCart({
+  const { data: cart } = useGetCart({
     enabled: false,
   });
   const { isValid, profileData } = useCheckoutStore((state) => state);
 
   const { mutate: checkout, isPending } = useCheckout({
     onSuccess(data) {
-      refetchCart();
+      clearCart();
       setCartId(cart?.cartId as number);
       const popup = new PaystackPop();
       const trans = popup.resumeTransaction(data.accessCode);

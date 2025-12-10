@@ -133,11 +133,11 @@ const PersonalDetails = ({
       className={cn("", isRefetching && "opacity-40")}
     >
       <div className="grid grid-cols-5 gap-6 px-12 pb-11">
-        <div className="col-span-2">
+        <div className="col-span-5 lg:col-span-2">
           <h2 className="text-xl font-semibold mb-6">Personal Details</h2>
         </div>
-        <div className="col-span-3">
-          <div className="grid grid-cols-2 gap-6">
+        <div className="col-span-5 lg:col-span-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="flex flex-col">
               <Label htmlFor="firstName">First name</Label>
               <Input
@@ -198,12 +198,12 @@ const PersonalDetails = ({
       </div>
       <hr />
       <div className="grid grid-cols-5 gap-6 px-12 py-11">
-        <div className="col-span-2">
+        <div className="col-span-5 lg:col-span-2">
           <h2 className="text-xl font-semibold mb-6">Delivery address</h2>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-5 lg:col-span-3">
           <div className="grid grid-cols-3 gap-6">
-            <div className="flex flex-col">
+            <div className="flex flex-col col-span-3 lg:col-span-1">
               <Label htmlFor="deliveryCountry">Country</Label>
               <Select
                 value={watch("deliveryCountry")}
@@ -221,7 +221,7 @@ const PersonalDetails = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col col-span-3 lg:col-span-1">
               <Label htmlFor="deliveryState">State</Label>
               <Select
                 value={watch("deliveryState")}
@@ -248,7 +248,7 @@ const PersonalDetails = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col col-span-3 lg:col-span-1">
               <Label htmlFor="deliveryZipCode">Zip code</Label>
               <Input
                 id="deliveryZipCode"
@@ -356,7 +356,7 @@ const PersonalDetails = ({
         <Button
           type="submit"
           disabled={isPending}
-          className=" ml-auto mt-12"
+          className=" ml-auto mt-12 w-full lg:w-auto"
           loading={isPending}
         >
           Update Profile

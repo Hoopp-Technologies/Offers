@@ -5,7 +5,7 @@ import useFilterStore from "@/store/filter";
 const HeroSection: React.FC = () => {
   const { search, setSearch } = useFilterStore((state) => state);
   return (
-    <section className="bg-gray-50 py-40">
+    <section className="bg-gray-50 py-20 lg:py-40">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-center">
         {/* Left Content */}
         <div className="text-center md:text-left mb-8 md:mb-0">

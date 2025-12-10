@@ -15,7 +15,7 @@ const HomeCategories = () => {
 
   return (
     <div className="container mx-auto mb-16">
-      <div className="bg-white flex items-center justify-center gap-9 py-6 rounded-lg px-5">
+      <div className="bg-white flex flex-wrap lg:flex-nowrap items-center justify-center gap-4 lg:gap-9 py-6 rounded-lg px-5">
         {categories?.map((category) => (
           <div
             key={category}

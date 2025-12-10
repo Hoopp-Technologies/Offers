@@ -46,7 +46,11 @@ const Wishlist: React.FC = () => {
         </div>
       )}
       <div className="py-20 flex items-center justify-center">
-        <Button asChild className="rounded-full text-lg px-36" size={"lg"}>
+        <Button
+          asChild
+          className="rounded-full text-lg px-16 lg:px-36"
+          size={"lg"}
+        >
           <Link to={"/"}>Continue Shopping</Link>
         </Button>
       </div>

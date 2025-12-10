@@ -64,7 +64,7 @@ const ForgotPassword = ({
         size={32}
         onClick={onReturn}
       />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <h1 className=" font-medium text-2xl mt-5">Recover your password</h1>
         <div className="flex items-start justify-center flex-col mt-6 w-full">
           <p className="mb-6">
@@ -74,7 +74,7 @@ const ForgotPassword = ({
             id="email"
             type="email"
             placeholder="your@email.com"
-            className="mt-2.5 w-[415px]"
+            className="mt-2.5 w-[330px] lg:w-[415px]"
             {...register("email", { required: true })}
           />
           <Button

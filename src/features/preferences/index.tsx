@@ -107,7 +107,7 @@ const UserPreferences = () => {
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
-                  <SelectItem key={country.value} value={country.value}>
+                  <SelectItem key={country.value} value={country.label}>
                     {country.label}
                   </SelectItem>
                 ))}

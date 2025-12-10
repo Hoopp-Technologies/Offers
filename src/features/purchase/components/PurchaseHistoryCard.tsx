@@ -59,12 +59,12 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
             "text-[#FF0800]": status === "EXPIRED" || status === "USED",
           })}
         >
-          RC9900299382{" "}
+          {item.voucherCode}{" "}
           <Copy
             color="#000000"
             className="cursor-pointer"
             onClick={() => {
-              copy("RC9900299382");
+              copy(item.voucherCode);
               toast.success("Copied to clipboard");
             }}
           />
