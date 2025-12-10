@@ -55,7 +55,7 @@ const OfferDetail: React.FC<{ data: ProductData }> = ({ data }) => {
           </div>
         )}
         <p className="text-sm text-gray-600">
-          {data?.numberOfClaims ?? 0} people have claimed this offer.
+          {data?.numberOfClaims ?? 0} people have REDEEMED this offer.
         </p>
       </div>
     </div>

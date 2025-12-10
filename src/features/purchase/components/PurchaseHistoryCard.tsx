@@ -15,7 +15,7 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
         return { textColor: "#494747", backgroundColor: "#E5E9EB" };
       case "EXPIRED":
         return { textColor: "#FFFFFF", backgroundColor: "#FF0800" };
-      case "CLAIMED":
+      case "REDEEMED":
         return { textColor: "#FFFFFF", backgroundColor: "#73BF45" };
       default:
         return { textColor: "#494747", backgroundColor: "#E5E9EB" };
@@ -49,14 +49,14 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
       <div
         className="h-24 flex flex-col items-center justify-center rounded-[10px]"
         style={{
-          backgroundColor: status === "CLAIMED" ? "#E9F8E0" : "#FAFAFA",
+          backgroundColor: status === "REDEEMED" ? "#E9F8E0" : "#FAFAFA",
         }}
       >
         <p className="text-xs">Your voucher code</p>
         <p
           className={cn("text-3xl font-bold flex gap-3 items-center", {
-            "text-[#73BF45]": status === "CLAIMED",
-            "text-[#FF0800]": status === "EXPIRED" || status === "USED",
+            "text-[#73BF45]": status === "REDEEMED",
+            "text-[#FF0800]": status === "EXPIRED" || status === "PENDING",
           })}
         >
           {item.voucherCode}{" "}

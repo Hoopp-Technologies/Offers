@@ -163,9 +163,9 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   useEffect(() => {
-    if (cart && loggedIn) {
+    if (loggedIn) {
       const localItems = cartItems as CartItem[];
-      const serverItems = cart.cartItems;
+      const serverItems = cart?.cartItems ?? [];
 
       // Find items that exist locally but not on server
       const localOnlyItems = localItems.filter(
@@ -189,8 +189,8 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       // Update local state with server data
-      setCartItems(cart.cartItems);
-      setCartId(cart.cartId);
+      setCartItems([...serverItems, ...localOnlyItems]);
+      setCartId(cart?.cartId);
     }
   }, [cart, loggedIn]);
 

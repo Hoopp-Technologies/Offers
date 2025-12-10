@@ -7,11 +7,11 @@ import PurchaseHistorySkeleton from "../components/PurchaseHistorySkeleton";
 import { useGetPurchaseHistory } from "@/services/profile/queries";
 
 const PurchaseHistory = () => {
-  const [tabValue, setTabValue] = useState<"ALL" | "PENDING" | "CLAIMED">(
+  const [tabValue, setTabValue] = useState<"ALL" | "PENDING" | "REDEEMED">(
     "ALL"
   );
   const handleTabChange = (value: string) => {
-    setTabValue(value as "ALL" | "PENDING" | "CLAIMED");
+    setTabValue(value as "ALL" | "PENDING" | "REDEEMED");
   };
   const { data, isLoading, refetch, isRefetching } = useGetPurchaseHistory({
     queryParams: {
@@ -45,7 +45,7 @@ const PurchaseHistory = () => {
             </TabsTrigger>
             <TabsTrigger
               className="data-[state=active]:bg-[#F158220D] data-[state=active]:text-(--color-primary) px-6 lg:px-10 rounded-full"
-              value="CLAIMED"
+              value="REDEEMED"
             >
               Redeemed
             </TabsTrigger>
@@ -72,7 +72,7 @@ const PurchaseHistory = () => {
           <p className="text-xl text-gray-500">
             {tabValue === "PENDING"
               ? "You have no pending purchases."
-              : tabValue === "CLAIMED"
+              : tabValue === "REDEEMED"
               ? "You have no redeemed vouchers."
               : "You're yet to make a purchase."}
           </p>

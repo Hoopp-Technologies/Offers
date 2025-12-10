@@ -16,7 +16,7 @@ const ProfileCard = () => {
     <div>
       <HoverCard openDelay={1} open={open} onOpenChange={setOpen}>
         <HoverCardTrigger>
-          <div className="flex flex-col items-center text-black hover:text-[#F15822]">
+          <div className="flex flex-col items-center text-black hover:text-[#F15822] cursor-pointer">
             <UserIcon className="h-5 w-5 mr-1" color="#808080" />
             My Profile
           </div>

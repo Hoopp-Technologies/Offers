@@ -17,12 +17,20 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
     register,
     handleSubmit,
     formState: { isValid },
-  } = useForm<{emailAddress: string; password: string; confirmPassword: string}>();
+  } = useForm<{
+    emailAddress: string;
+    password: string;
+    confirmPassword: string;
+  }>();
 
-  const onSubmit = async (data: {emailAddress: string; password: string; confirmPassword: string}) => {
+  const onSubmit = async (data: {
+    emailAddress: string;
+    password: string;
+    confirmPassword: string;
+  }) => {
     if (!validatePassword(data.password)) return;
     if (data.password !== data.confirmPassword) {
-      toast.error("Passwords don't match")
+      toast.error("Passwords don't match");
       return;
     }
 
@@ -37,12 +45,12 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
       body: JSON.stringify({
         email: data.emailAddress,
         password: data.password,
-        firstName: "Name",
-        lastName: "Name again",
+        firstName: "",
+        lastName: "",
         addressRequest: {
-          country: "Nigeria",
-          province: "Lagos",
-          location: "Abeokuata, 102312",          
+          country: "",
+          province: "",
+          location: "",
           isPrimary: true,
         },
       }),
@@ -75,7 +83,7 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
             placeholder="John"
             className="mt-2.5"
             // {...register("firstName", { required: true })}
-          />        
+          />
         </div>
         <div>
           <Label className="mb-4" htmlFor="lastName">
@@ -87,7 +95,7 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
             placeholder="Doe"
             className="mt-2.5"
             // {...register("lastName", { required: true })}
-          />         
+          />
         </div>
       </div>
       <div className="relative mb-7">
@@ -145,11 +153,7 @@ const Signup = ({ onRegister }: { onRegister: () => void }) => {
         />
       </div>
 
-      <Button
-        type="submit"
-        loading={isLoading}
-        disabled={!isValid}        
-      >
+      <Button type="submit" loading={isLoading} disabled={!isValid}>
         Proceed to Register
       </Button>
     </form>

@@ -28,6 +28,7 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
   } = product;
   const { updateQuantity, removeFromCart } = useCart();
   const { selectedCurrency } = usePreferences();
+  console.log({ product });
 
   return (
     <div className="flex items-center gap-2 lg:gap-4.5">
@@ -63,10 +64,11 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
               <span className="bg-[#73BF451A] rounded-full px-3 py-0.5 text-xs ml-3">
                 Save{" "}
                 {discountType === DiscountType.FIXED_AMOUNT
-                  ? getCurrencySymbol(selectedCurrency)
-                  : ""}
-                {price?.discountValue ?? discountValue}
-                {discountType === DiscountType.PERCENTAGE ? "%" : ""}
+                  ? `${getCurrencySymbol(selectedCurrency)}${(
+                      (price?.originalPrice ?? originalPrice) -
+                      (price?.discountedPrice ?? discountedPrice)
+                    ).toLocaleString()}`
+                  : `${price?.discountValue ?? discountValue}%`}
               </span>
             </div>
             <div className=" gap-4 items-center text-xs text-black mt-4 hidden">
@@ -77,7 +79,7 @@ const CartProduct: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-row justify-between w-full lg:w-auto items-center lg:flex-col">
+        <div className="flex flex-row justify-between w-full lg:w-auto items-center  lg:items-end lg:flex-col">
           <p className="text-right text-lg font-bold">
             {getCurrencySymbol(selectedCurrency)}
             {(
