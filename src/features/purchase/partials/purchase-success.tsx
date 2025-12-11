@@ -120,7 +120,7 @@ const PurchaseSuccess = () => {
               )}
               <Button
                 asChild
-                className="w-full rounded-full mt-4.5 bg-[#FEF7F4] text-[#F15822]"
+                className="w-full rounded-full mt-4.5 bg-[#FEF7F4] text-[#F15822] border border-[#F15822]"
                 size={"lg"}
               >
                 <Link to={"/purchase-history"}>Go to purchase history</Link>

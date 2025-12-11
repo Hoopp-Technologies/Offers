@@ -73,13 +73,14 @@ const CartSummary = () => {
 
   const handleUpdateProfile = () => {
     if (!isCheckoutPage) return;
+
+    const names = profileData.fullName?.trim().split(" ") || [];
+    const firstName = names[0] || "";
+    const lastName = names.slice(1).join(" ") || "";
+
     updateProfile({
-      ...profileData,
-      firstName: profileData.fullName?.split(" ")?.[0] || "",
-      lastName:
-        profileData.fullName?.split(" ")?.[1] +
-          " " +
-          profileData.fullName?.split(" ")?.[2] || "",
+      firstName,
+      lastName,
       email: profileData.email || "",
       phoneNumber: profileData.phoneNumber || "",
       gender: profileData.gender || "",

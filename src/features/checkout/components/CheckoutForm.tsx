@@ -35,8 +35,10 @@ interface CheckoutFormData {
 
 const CheckoutForm = () => {
   const { data: profileData, isLoading, isRefetching } = useGetProfile();
-  const { setProfileData: setCheckoutProfileData, setIsValid } =
-    useCheckoutStore((state) => state);
+  const setCheckoutProfileData = useCheckoutStore(
+    (state) => state.setProfileData
+  );
+  const setIsValid = useCheckoutStore((state) => state.setIsValid);
 
   const {
     register,
@@ -92,21 +94,24 @@ const CheckoutForm = () => {
     }
   }, [profileData, setValue, isLoading, isRefetching]);
 
+  const formValues = watch();
+
   useEffect(() => {
     setIsValid(isValid);
+
     if (isValid) {
       setCheckoutProfileData({
-        fullName: watch("fullName"),
-        email: watch("email"),
-        phoneNumber: watch("phoneNumber"),
-        gender: watch("gender"),
-        deliveryAddress: watch("deliveryAddress"),
-        country: watch("country"),
-        state: watch("state"),
-        zipCode: watch("zipCode"),
+        fullName: formValues.fullName,
+        email: formValues.email,
+        phoneNumber: formValues.phoneNumber,
+        gender: formValues.gender,
+        deliveryAddress: formValues.deliveryAddress,
+        country: formValues.country,
+        state: formValues.state,
+        zipCode: formValues.zipCode,
       });
     }
-  }, [watch, isValid]);
+  }, [formValues, isValid]);
 
   // Reset state when country changes
   useEffect(() => {
