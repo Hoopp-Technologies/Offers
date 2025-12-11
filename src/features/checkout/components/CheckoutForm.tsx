@@ -35,7 +35,8 @@ interface CheckoutFormData {
 
 const CheckoutForm = () => {
   const { data: profileData, isLoading, isRefetching } = useGetProfile();
-  const { setProfileData, setIsValid } = useCheckoutStore((state) => state);
+  const { setProfileData: setCheckoutProfileData, setIsValid } =
+    useCheckoutStore((state) => state);
 
   const {
     register,
@@ -61,7 +62,9 @@ const CheckoutForm = () => {
   // Get states for selected country
   const states = useMemo(() => {
     if (!selectedCountry) return [];
-    return State.getStatesOfCountry(selectedCountry);
+    return State.getStatesOfCountry(
+      COUNTRIES.find((country) => country.name === selectedCountry)?.code
+    );
   }, [selectedCountry]);
 
   // Preload form data from profile
@@ -81,7 +84,7 @@ const CheckoutForm = () => {
         setValue(
           "country",
           COUNTRIES.find((country) => country.name === primaryAddress?.country)
-            ?.code ?? ""
+            ?.name ?? ""
         );
         setValue("state", primaryAddress?.province ?? "");
         setValue("zipCode", primaryAddress?.zipCode ?? "");
@@ -92,7 +95,7 @@ const CheckoutForm = () => {
   useEffect(() => {
     setIsValid(isValid);
     if (isValid) {
-      setProfileData({
+      setCheckoutProfileData({
         fullName: watch("fullName"),
         email: watch("email"),
         phoneNumber: watch("phoneNumber"),
@@ -103,7 +106,7 @@ const CheckoutForm = () => {
         zipCode: watch("zipCode"),
       });
     }
-  }, [watch]);
+  }, [watch, isValid]);
 
   // Reset state when country changes
   useEffect(() => {
@@ -169,7 +172,7 @@ const CheckoutForm = () => {
                 </SelectTrigger>
                 <SelectContent>
                   {COUNTRIES.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
+                    <SelectItem key={country.code} value={country.name}>
                       {country.name}
                     </SelectItem>
                   ))}

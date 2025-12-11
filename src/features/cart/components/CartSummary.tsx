@@ -40,10 +40,11 @@ const CartSummary = () => {
     },
   });
 
-  const { mutateAsync: _updateProfile, isPending: _isPendingUpdateProfile } =
+  const { mutateAsync: updateProfile, isPending: isPendingUpdateProfile } =
     useUpdateProfile({
       onSuccess: () => {
         toast.success("Profile updated successfully");
+        handleCheckout();
       },
       onError: () => {
         toast.error("Failed to update profile");
@@ -68,6 +69,25 @@ const CartSummary = () => {
     if (!isCheckoutPage) return;
     const checkoutObject = transformCart(cartItems, cartId);
     checkout(checkoutObject as unknown as PayloadType);
+  };
+
+  const handleUpdateProfile = () => {
+    if (!isCheckoutPage) return;
+    updateProfile({
+      ...profileData,
+      firstName: profileData.fullName?.split(" ")?.[0] || "",
+      lastName:
+        profileData.fullName?.split(" ")?.[1] +
+          " " +
+          profileData.fullName?.split(" ")?.[2] || "",
+      email: profileData.email || "",
+      phoneNumber: profileData.phoneNumber || "",
+      gender: profileData.gender || "",
+      deliveryCountry: profileData.country,
+      deliveryState: profileData?.state || "",
+      deliveryZipCode: profileData?.zipCode || "",
+      deliveryAddress: profileData?.deliveryAddress || "",
+    });
   };
 
   return (
@@ -151,9 +171,9 @@ const CartSummary = () => {
             </Button>
           ) : (
             <Button
-              onClick={handleCheckout}
-              loading={isPending}
-              disabled={isPending || (isCheckoutPage && isValid)}
+              onClick={handleUpdateProfile}
+              loading={isPending || isPendingUpdateProfile}
+              disabled={isPending || (isCheckoutPage && !isValid)}
               className="rounded-full text-lg py-6 w-full"
               size={"lg"}
             >

@@ -1,4 +1,11 @@
-import { CalendarDays, Copy, Eye, MailOpen, Phone } from "lucide-react";
+import {
+  CalendarDays,
+  Copy,
+  Download,
+  Eye,
+  MailOpen,
+  Phone,
+} from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -6,6 +13,8 @@ import copy from "copy-to-clipboard";
 import type { PurchaseHistoryItem } from "@/services/profile/types";
 import { capitalizeText } from "@/utils/textUtils";
 import { differenceInCalendarDays, formatDistance } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
   const [status] = useState(item.status);
@@ -23,7 +32,7 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
   };
 
   return (
-    <div className="rounded-[10px] px-6 py-4 bg-white border border-[#F4F6F5]">
+    <div className="rounded-[10px] px-6 py-4 bg-white border border-[#F4F6F5] h-full">
       <p
         className="w-fit rounded-full px-2.5 py-1.5 mb-3 text-sm font-semibold"
         style={{
@@ -88,6 +97,30 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
           <MailOpen size={18} className="cursor-pointer" />
         </p>
       </div>
+      {item.primaryButton !== "CHECKOUT" && (
+        <Button
+          asChild
+          className={cn(
+            "w-full rounded-full mt-8",
+            item.status === "REDEEMED" && "opacity-50"
+          )}
+          size={"lg"}
+          disabled={item.status === "REDEEMED"}
+        >
+          <Link to={"/purchase-history"}>
+            {item.primaryButton === "DOWNLOAD" ? (
+              <>
+                <Download /> Download resource
+              </>
+            ) : (
+              <>
+                <CalendarDays />
+                Book now
+              </>
+            )}
+          </Link>
+        </Button>
+      )}
     </div>
   );
 };

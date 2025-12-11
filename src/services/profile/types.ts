@@ -43,6 +43,11 @@ export type PurchaseHistoryItem = {
   quantityBought: number;
   category: string;
   imageUrls: string[];
+  quantity: 1;
+  primaryButton: "DOWNLOAD" | "CHECKOUT" | "BOOK";
+  cta: string | null;
+  email: string;
+  phoneNumber: string;
 };
 
 export type Pagination = {
@@ -65,4 +70,8 @@ export type TransactionData = {
   category: string;
   brandName: string;
   imageUrls: string[];
+  primaryButton: "DOWNLOAD" | "CHECKOUT" | "BOOK";
+  cta: string | null;
+  email: string;
+  phoneNumber: string;
 };
