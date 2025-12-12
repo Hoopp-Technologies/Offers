@@ -47,8 +47,12 @@ const PurchaseSuccess = () => {
                     Sold by {capitalizeText(item.brandName)}
                   </p>
                   <div className="flex items-center gap-2">
-                    <Phone size={9} className="cursor-pointer" />
-                    <MailOpen size={9} className="cursor-pointer" />
+                    <Link to={"tel:" + item.phoneNumber}>
+                      <Phone size={9} className="cursor-pointer" />
+                    </Link>
+                    <Link to={"mailto:" + item.email}>
+                      <MailOpen size={9} className="cursor-pointer" />
+                    </Link>
                   </div>
                 </div>
                 <p className="text-[10px] text-[#808080]">

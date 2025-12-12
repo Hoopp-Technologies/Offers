@@ -21,7 +21,7 @@ const ProfileCard = () => {
             My Profile
           </div>
         </HoverCardTrigger>
-        <HoverCardContent className="pt-6 px-0">
+        <HoverCardContent className="pt-6 px-0 z-100">
           <div className="flex flex-col gap-1.5 px-2 pb-3">
             {loggedIn && (
               <>

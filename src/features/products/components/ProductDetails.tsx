@@ -17,6 +17,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { productName, discount, productDescription, sizeColorSet, price } =
     product;
   const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
   const { addToCart, isInCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
@@ -33,7 +35,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   );
 
   const handleAddtToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, { color, size });
   };
 
   const isWishlisted = isInWishlist(product.id ?? "");
@@ -76,12 +78,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           >
             <h4 className="font-semibold mb-2">Select size</h4>
             <div className="flex space-x-2">
-              {uniqueSizes?.map((size, i) => (
+              {uniqueSizes?.map((sizeOption, i) => (
                 <button
                   key={i}
-                  className="px-4 py-2 bg-[#FFF1EE] rounded-full hover:bg-(--color-primary) focus:bg-(--color-primary) hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  onClick={() => setSize(sizeOption)}
+                  className={cn(
+                    "px-4 py-2 bg-[#FFF1EE] rounded-full hover:bg-(--color-primary) hover:text-white",
+                    sizeOption === size &&
+                      "bg-(--color-primary) text-white outline-none ring-orange-500"
+                  )}
                 >
-                  {size}
+                  {sizeOption}
                 </button>
               ))}
             </div>
@@ -99,8 +106,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               {uniqueColors?.map((color, i) => (
                 <button
                   key={i}
+                  onClick={() => setColor(color)}
                   style={{ backgroundColor: color }}
-                  className="w-8 h-8 rounded-full border-2 group border-transparent flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className={cn(
+                    "w-8 h-8 rounded-full border-2 group border-transparent flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-orange-500",
+                    color === color &&
+                      "bg-(--color-primary) text-white outline-none ring-orange-500"
+                  )}
                 >
                   <Check
                     className=" text-white group-focus:opacity-100 opacity-0"

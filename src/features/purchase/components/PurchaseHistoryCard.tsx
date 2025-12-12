@@ -93,8 +93,12 @@ const PurchaseHistoryCard = ({ item }: { item: PurchaseHistoryItem }) => {
           View terms
         </p>
         <p className="flex items-center gap-4 text-sm">
-          <Phone size={18} className="cursor-pointer" />
-          <MailOpen size={18} className="cursor-pointer" />
+          <Link to={"tel:" + item.phoneNumber}>
+            <Phone size={18} className="cursor-pointer" />
+          </Link>
+          <Link to={"mailto:" + item.email}>
+            <MailOpen size={18} className="cursor-pointer" />
+          </Link>
         </p>
       </div>
       {item.primaryButton !== "CHECKOUT" && (

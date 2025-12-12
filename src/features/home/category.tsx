@@ -92,7 +92,7 @@ export const Products = () => {
   return (
     <div className="pt-20">
       <HeroSection />
-      <div className="sticky top-[78px] z-50">
+      <div className="sticky top-[78px] z-30">
         <FilterSection />
       </div>
       <ProductGrid

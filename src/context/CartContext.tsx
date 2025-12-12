@@ -18,6 +18,7 @@ export interface CartItem extends ProductData {
   discountValue: number;
   discountType: DiscountType;
   totalPrice: number;
+  selectedVariant?: { color: string; size: string };
   imageUrl: string[];
 }
 
@@ -26,7 +27,7 @@ interface CartContextType {
   addToCart: (
     product: ProductData,
     quantity?: number,
-    variant?: string
+    variant?: { color: string; size: string }
   ) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -71,7 +72,11 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     enabled: loggedIn,
   });
 
-  const addToCart = (product: ProductData, quantity = 1, variant?: string) => {
+  const addToCart = (
+    product: ProductData,
+    quantity = 1,
+    variant?: { color: string; size: string }
+  ) => {
     const currentItems = cartItems as CartItem[];
     const existingItemIndex = currentItems.findIndex(
       (item) => (item.offerId ?? item.id) === product.id
@@ -82,6 +87,7 @@ export const CartContextProvider: React.FC<{ children: React.ReactNode }> = ({
     if (existingItemIndex > -1) {
       newItems = [...currentItems];
       newItems[existingItemIndex].quantity += quantity;
+      newItems[existingItemIndex].selectedVariant = variant;
     } else {
       newItems = [
         ...currentItems,
